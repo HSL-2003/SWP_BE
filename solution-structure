@@ -1,0 +1,11 @@
+SkincareSolution/
+├── src/
+│   ├── Skincare.API/                 # Web API project
+│   ├── Skincare.Application/         # Business logic, services
+│   ├── Skincare.Domain/             # Domain entities, interfaces
+│   ├── Skincare.Infrastructure/     # Database, external services
+│   └── Skincare.Common/             # Shared utilities, constants
+└── tests/
+    ├── Skincare.UnitTests/
+    ├── Skincare.IntegrationTests/
+    └── Skincare.FunctionalTests/ 
