@@ -8,6 +8,6 @@ namespace Repo
         Task<IEnumerable<SkinRoutine>> GetAllAsync();
         Task<SkinRoutine> AddAsync(SkinRoutine skinRoutine);
         Task UpdateAsync(SkinRoutine skinRoutine);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int skinRoutineId);
     }
 }

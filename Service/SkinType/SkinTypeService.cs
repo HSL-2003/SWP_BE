@@ -62,7 +62,7 @@ namespace Service.SkinType
                 var determinedSkinType = await DetermineSkinTypeFromAnswers(assessment.Answers);
                 
                 _logger.LogInformation("Determined skin type: {SkinTypeId} - {SkinTypeName}", 
-                    determinedSkinType.Id, determinedSkinType.Name);
+                    determinedSkinType.SkinTypeId, determinedSkinType.SkinTypeName);
 
                 return _mapper.Map<SkinTypeDto>(determinedSkinType);
             }

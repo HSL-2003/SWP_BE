@@ -28,6 +28,6 @@ namespace SWP391_BE.Exceptions
     public class SkinRoutineNotFoundException : SkinCareException
     {
         public SkinRoutineNotFoundException(int skinTypeId) 
-            : base($"Không tìm thấy routine cho loại da với ID {skinTypeId}") { }
+            : base($"Không tìm thấy routine cho loại da với SkinTypeId {skinTypeId}") { }
     }
 } 

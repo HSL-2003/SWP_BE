@@ -58,7 +58,7 @@ namespace Service.Product
         public async Task UpdateProductAsync(int id, ProductCreateDto productDto)
         {
             var product = _mapper.Map<Data.Models.Product>(productDto);
-            product.Id = id;
+            product.ProductId = id;
             await _productRepository.UpdateAsync(product);
         }
 

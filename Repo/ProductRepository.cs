@@ -19,7 +19,7 @@ namespace Repo
             return await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.SuitableSkinTypes)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync(ProductFilterDto filter)
@@ -31,7 +31,7 @@ namespace Repo
 
             if (!string.IsNullOrEmpty(filter.SearchTerm))
             {
-                query = query.Where(p => p.Name.Contains(filter.SearchTerm) || 
+                query = query.Where(p => p.ProductName.Contains(filter.SearchTerm) || 
                                        p.Description.Contains(filter.SearchTerm));
             }
 
@@ -52,7 +52,7 @@ namespace Repo
 
             if (filter.SkinTypeId.HasValue)
             {
-                query = query.Where(p => p.SuitableSkinTypes.Any(st => st.Id == filter.SkinTypeId));
+                query = query.Where(p => p.SuitableSkinTypes.Any(st => st.SkinTypeId == filter.SkinTypeId));
             }
 
             return await query
@@ -91,7 +91,7 @@ namespace Repo
             return await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.SuitableSkinTypes)
-                .Where(p => p.SuitableSkinTypes.Any(st => st.Id == skinTypeId))
+                .Where(p => p.SuitableSkinTypes.Any(st => st.SkinTypeId == skinTypeId))
                 .ToListAsync();
         }
 
@@ -100,7 +100,7 @@ namespace Repo
             return await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.SuitableSkinTypes)
-                .Where(p => productIds.Contains(p.Id))
+                .Where(p => productIds.Contains(p.ProductId))
                 .ToListAsync();
         }
     }
