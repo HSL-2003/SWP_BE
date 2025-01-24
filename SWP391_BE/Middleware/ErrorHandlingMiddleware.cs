@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+using SWP391_BE.Exceptions;
 
 public class ErrorHandlingMiddleware
 {
@@ -36,17 +37,30 @@ public class ErrorHandlingMiddleware
             error = new
             {
                 message = exception.Message,
-                details = exception is ApplicationException ? exception.Message : "Đã xảy ra lỗi"
+                details = GetExceptionDetails(exception)
             }
         };
 
         context.Response.StatusCode = exception switch
         {
+            ProductNotFoundException => StatusCodes.Status404NotFound,
+            SkinTypeNotFoundException => StatusCodes.Status404NotFound,
+            InvalidAssessmentException => StatusCodes.Status400BadRequest,
             ApplicationException => StatusCodes.Status400BadRequest,
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status500InternalServerError
         };
 
         await context.Response.WriteAsJsonAsync(response);
+    }
+
+    private static string GetExceptionDetails(Exception exception)
+    {
+        return exception switch
+        {
+            SkinCareException => exception.Message,
+            ApplicationException => exception.Message,
+            _ => "Đã xảy ra lỗi trong hệ thống"
+        };
     }
 } 
