@@ -2,6 +2,22 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "AutoMapper/13.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Azure.Core/1.38.0": {
         "type": "package",
         "dependencies": {
@@ -1792,6 +1808,21 @@
     }
   },
   "libraries": {
+    "AutoMapper/13.0.1": {
+      "sha512": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+      "type": "package",
+      "path": "automapper/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.13.0.1.nupkg.sha512",
+        "automapper.nuspec",
+        "icon.png",
+        "lib/net6.0/AutoMapper.dll",
+        "lib/net6.0/AutoMapper.xml"
+      ]
+    },
     "Azure.Core/1.38.0": {
       "sha512": "IuEgCoVA0ef7E4pQtpC3+TkPbzaoQfa77HlfJDmfuaJUCVJmn7fT0izamZiryW5sYUFKizsftIxMkXKbgIcPMQ==",
       "type": "package",
@@ -4685,6 +4716,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "AutoMapper >= 13.0.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.12",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.12",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.12",
@@ -4701,11 +4733,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SWP391_BE\\SWP391_BE\\SWP391_BE.csproj",
+      "projectUniqueName": "D:\\SWP_BE-45d6f3d8af943959cb8802e7bd374de908053515\\SWP391_BE\\SWP391_BE.csproj",
       "projectName": "SWP391_BE",
-      "projectPath": "D:\\SWP391_BE\\SWP391_BE\\SWP391_BE.csproj",
+      "projectPath": "D:\\SWP_BE-45d6f3d8af943959cb8802e7bd374de908053515\\SWP391_BE\\SWP391_BE.csproj",
       "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-      "outputPath": "D:\\SWP391_BE\\SWP391_BE\\obj\\",
+      "outputPath": "D:\\SWP_BE-45d6f3d8af943959cb8802e7bd374de908053515\\SWP391_BE\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4726,8 +4758,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\SWP391_BE\\Service\\Service.csproj": {
-              "projectPath": "D:\\SWP391_BE\\Service\\Service.csproj"
+            "D:\\SWP_BE-45d6f3d8af943959cb8802e7bd374de908053515\\Service\\Service.csproj": {
+              "projectPath": "D:\\SWP_BE-45d6f3d8af943959cb8802e7bd374de908053515\\Service\\Service.csproj"
             }
           }
         }
@@ -4748,6 +4780,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "AutoMapper": {
+            "target": "Package",
+            "version": "[13.0.1, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.12, )"

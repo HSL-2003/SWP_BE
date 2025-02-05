@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace Data.Models;
 
-public class SkinType
+public partial class Skintype
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public List<string> Characteristics { get; set; }
-    public ICollection<Product> SuitableProducts { get; set; }
-    public ICollection<SkinRoutine> SkinRoutines { get; set; }
+    public int SkinTypeId { get; set; }
+
+    public string SkinTypeName { get; set; } = null!;
+
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
+    public virtual ICollection<SkinRoutine> SkinRoutines { get; set; } = new List<SkinRoutine>();
 }

@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SWP391_BE.Services;
-using SWP391_BE.Dtos;
+using Service;
+using SWP391_BE.DTOs;
+using Data.Models;
 
 namespace SWP391_BE.Controllers
 {
@@ -10,34 +11,66 @@ namespace SWP391_BE.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts([FromQuery] ProductFilterDto filter)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
-            // Get products with filtering
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(_mapper.Map<IEnumerable<ProductDTO>>(products));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProduct(int id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
-            // Get single product
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<ProductDTO>(product));
         }
 
-        [HttpGet("compare")]
-        public async Task<IActionResult> CompareProducts([FromQuery] List<int> productIds)
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO createProductDTO)
         {
-            // Compare products
+            var product = _mapper.Map<Product>(createProductDTO);
+            await _productService.AddProductAsync(product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.ProductId }, 
+                _mapper.Map<ProductDTO>(product));
         }
 
-        [HttpGet("recommended/{skinTypeId}")]
-        public async Task<IActionResult> GetRecommendedProducts(int skinTypeId)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, UpdateProductDTO updateProductDTO)
         {
-            // Get recommended products for skin type
+            var existingProduct = await _productService.GetProductByIdAsync(id);
+            if (existingProduct == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updateProductDTO, existingProduct);
+            await _productService.UpdateProductAsync(existingProduct);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            await _productService.DeleteProductAsync(id);
+            return NoContent();
         }
     }
 } 

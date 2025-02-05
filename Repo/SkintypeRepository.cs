@@ -1,53 +1,45 @@
-using Data;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repo
 {
-    public class SkinTypeRepository : ISkinTypeRepository
+    public class SkintypeRepository : ISkintypeRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly SkinCareManagementDbContext _context;
 
-        public SkinTypeRepository(ApplicationDbContext context)
+        public SkintypeRepository(SkinCareManagementDbContext context)
         {
             _context = context;
         }
 
-        public async Task<SkinType> GetByIdAsync(int id)
+        public async Task<IEnumerable<Skintype>> GetAllAsync()
         {
-            return await _context.SkinTypes
-                .Include(st => st.SuitableProducts)
-                .Include(st => st.SkinRoutines)
-                .FirstOrDefaultAsync(st => st.Id == id);
+            return await _context.Skintypes.ToListAsync();
         }
 
-        public async Task<IEnumerable<SkinType>> GetAllAsync()
+        public async Task<Skintype?> GetByIdAsync(int id)
         {
-            return await _context.SkinTypes
-                .Include(st => st.SuitableProducts)
-                .Include(st => st.SkinRoutines)
-                .ToListAsync();
+            return await _context.Skintypes.FindAsync(id);
         }
 
-        public async Task<SkinType> AddAsync(SkinType skinType)
+        public async Task AddAsync(Skintype skintype)
         {
-            _context.SkinTypes.Add(skinType);
+            await _context.Skintypes.AddAsync(skintype);
             await _context.SaveChangesAsync();
-            return skinType;
         }
 
-        public async Task UpdateAsync(SkinType skinType)
+        public async Task UpdateAsync(Skintype skintype)
         {
-            _context.Entry(skinType).State = EntityState.Modified;
+            _context.Skintypes.Update(skintype);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var skinType = await _context.SkinTypes.FindAsync(id);
-            if (skinType != null)
+            var skintype = await _context.Skintypes.FindAsync(id);
+            if (skintype != null)
             {
-                _context.SkinTypes.Remove(skinType);
+                _context.Skintypes.Remove(skintype);
                 await _context.SaveChangesAsync();
             }
         }

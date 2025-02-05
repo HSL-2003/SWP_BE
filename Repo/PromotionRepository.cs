@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repo
 {
-    public class PromotionRepository
+    public class PromotionRepository : IPromotionRepository
     {
         private readonly SkinCareManagementDbContext _context;
 

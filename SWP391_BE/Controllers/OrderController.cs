@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SWP391_BE.Services;
-using System.Threading.Tasks;
+using Service;
+using SWP391_BE.DTOs;
+using Data.Models;
 
 namespace SWP391_BE.Controllers
 {
@@ -10,36 +11,65 @@ namespace SWP391_BE.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly IPaymentService _paymentService;
+        private readonly IMapper _mapper;
 
-        public OrderController(IOrderService orderService, IPaymentService paymentService)
+        public OrderController(IOrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
-            _paymentService = paymentService;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrders()
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
+            return Ok(_mapper.Map<IEnumerable<OrderDTO>>(orders));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OrderDTO>> GetOrder(int id)
+        {
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<OrderDTO>(order));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] OrderCreateDto order)
+        public async Task<ActionResult<OrderDTO>> CreateOrder(CreateOrderDTO createOrderDTO)
         {
-            // Create new order
+            var order = _mapper.Map<Order>(createOrderDTO);
+            await _orderService.AddOrderAsync(order);
+            return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, _mapper.Map<OrderDTO>(order));
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetUserOrders(int userId)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOrder(int id, UpdateOrderDTO updateOrderDTO)
         {
-            // Get user's order history
+            var existingOrder = await _orderService.GetOrderByIdAsync(id);
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(updateOrderDTO, existingOrder);
+            await _orderService.UpdateOrderAsync(existingOrder);
+            return NoContent();
         }
 
-        [HttpPut("{orderId}/cancel")]
-        public async Task<IActionResult> CancelOrder(int orderId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
         {
-            // Cancel order
-        }
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
 
-        [HttpPost("{orderId}/payment")]
-        public async Task<IActionResult> ProcessPayment(int orderId, [FromBody] PaymentDto payment)
-        {
-            // Process payment
+            await _orderService.DeleteOrderAsync(id);
+            return NoContent();
         }
     }
 } 

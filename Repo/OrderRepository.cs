@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repo
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly SkinCareManagementDbContext _context;
 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iVMPJnk8B3w=",
+  "dgSpecHash": "sR/8sCnikVY=",
   "success": true,
-  "projectFilePath": "D:\\SWP391_BE\\Service\\Service.csproj",
+  "projectFilePath": "D:\\SWP_BE-45d6f3d8af943959cb8802e7bd374de908053515\\Service\\Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lequa\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\lequa\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

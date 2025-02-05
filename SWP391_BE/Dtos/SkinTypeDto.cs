@@ -1,20 +1,18 @@
-namespace SWP391_BE.Dtos
+namespace SWP391_BE.DTOs
 {
-    public class SkinAssessmentDto
-    {
-        public List<SkinQuestionAnswerDto> Answers { get; set; }
-    }
-
-    public class SkinQuestionAnswerDto
-    {
-        public int QuestionId { get; set; }
-        public int AnswerId { get; set; }
-    }
-
-    public class SkinRoutineDto
+    public class SkintypeDTO
     {
         public int SkinTypeId { get; set; }
-        public string SkinTypeName { get; set; }
-        public List<RoutineStepDto> Steps { get; set; }
+        public string SkinTypeName { get; set; } = null!;
+    }
+
+    public class CreateSkintypeDTO
+    {
+        public string SkinTypeName { get; set; } = null!;
+    }
+
+    public class UpdateSkintypeDTO
+    {
+        public string SkinTypeName { get; set; } = null!;
     }
 } 
