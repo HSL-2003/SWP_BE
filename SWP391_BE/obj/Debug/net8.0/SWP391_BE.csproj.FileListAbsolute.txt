@@ -480,3 +480,7 @@ D:\CN5\SWP391\SWP_BE\SWP391_BE\obj\Debug\net8.0\refint\SWP391_BE.dll
 D:\CN5\SWP391\SWP_BE\SWP391_BE\obj\Debug\net8.0\SWP391_BE.pdb
 D:\CN5\SWP391\SWP_BE\SWP391_BE\obj\Debug\net8.0\SWP391_BE.genruntimeconfig.cache
 D:\CN5\SWP391\SWP_BE\SWP391_BE\obj\Debug\net8.0\ref\SWP391_BE.dll
+D:\CN5\SWP391\SWP_BE\SWP391_BE\bin\Debug\net8.0\FluentValidation.dll
+D:\CN5\SWP391\SWP_BE\SWP391_BE\bin\Debug\net8.0\MediatR.dll
+D:\CN5\SWP391\SWP_BE\SWP391_BE\bin\Debug\net8.0\MediatR.Contracts.dll
+D:\CN5\SWP391\SWP_BE\SWP391_BE\bin\Debug\net8.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
