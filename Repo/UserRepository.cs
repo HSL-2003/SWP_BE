@@ -1,9 +1,12 @@
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Repo
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly SkinCareManagementDbContext _context;
 
@@ -42,6 +45,11 @@ namespace Repo
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<User?> FirstOrDefaultAsync(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            return await _context.Users.FirstOrDefaultAsync(predicate, cancellationToken);
         }
     }
 }
