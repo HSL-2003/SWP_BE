@@ -46,7 +46,7 @@ namespace SWP391_BE.DTOs.Auth.LoginUser
                 UserID = user.UserId.ToString(),
                 Token = jwtResult.Token,
                 Expiration = jwtResult.Expiration,
-                Role = user.Role.ToString(),
+                Role = user.Role?.ToString() ?? "Unknown",
                 IsVerification = user.IsVerification,
             };
         }

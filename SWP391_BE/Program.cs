@@ -19,14 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Register SkinCareManagementDbContext
 builder.Services.AddDbContext<SkinCareManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SkinCareManagementDB")));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
-    typeof(LoginAdminHandle).Assembly,
-    typeof(LoginUserHandle).Assembly
-));
+builder.Services.AddMediatR(typeof(LoginAdminHandle).Assembly);
+builder.Services.AddMediatR(typeof(LoginUserHandle).Assembly);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 builder.Services.AddScoped<IUtilityService, UtilityService>();
-// ??ng ký IJWT v?i m?t l?p th?c thi
+// ??ng kï¿½ IJWT v?i m?t l?p th?c thi
 builder.Services.AddScoped<IJWT, JWTService>();
 builder.Services.AddHttpContextAccessor();
 
