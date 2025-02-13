@@ -1,8 +1,17 @@
 using Data.Models;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Repo;
 using Service;
+using SWP391_BE.Abstraction.JWT;
+using SWP391_BE.Abstraction.Logging;
+using SWP391_BE.Abstraction.Utility;
+using SWP391_BE.DTOs.Auth.LoginAdmin;
+using SWP391_BE.DTOs.Auth.LoginUser;
 using SWP391_BE.Mappings;
+using SWP391_BE.RealJWT;
+using SWP391_BE.RealLogger;
+using SWP391_BE.RealUtility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +19,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Register SkinCareManagementDbContext
 builder.Services.AddDbContext<SkinCareManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SkinCareManagementDB")));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
+    typeof(LoginAdminHandle).Assembly,
+    typeof(LoginUserHandle).Assembly
+));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+builder.Services.AddScoped<IUtilityService, UtilityService>();
+// ??ng ký IJWT v?i m?t l?p th?c thi
+builder.Services.AddScoped<IJWT, JWTService>();
+builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -56,6 +76,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

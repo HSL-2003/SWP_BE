@@ -12,6 +12,7 @@ public partial class User
     public string Username { get; set; } = null!;
 
     public string Password { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!; // Đổi từ Password sang PasswordHash
 
     public string? FullName { get; set; }
 
@@ -22,6 +23,12 @@ public partial class User
     public string? Address { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+
+    public bool IsVerification { get; set; } // Thêm trạng thái xác thực
+
+    public bool IsBanned { get; set; } // Trạng thái tài khoản bị khóa hay không
+
+    public string? ExpirationToken { get; set; } // Token để xác thực tài khoản
 
     public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 
