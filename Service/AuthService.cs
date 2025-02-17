@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
+using Google.Apis.Auth;
 
 
 namespace Service
@@ -294,5 +295,77 @@ namespace Service
 
             return tokenHandler.WriteToken(token);
         }
+
+        public async Task<ServiceResponse<string>> GoogleLogin(string token)
+        {
+            var response = new ServiceResponse<string>();
+
+            try
+            {
+                // Verify Google token
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string> { _configuration["Authentication:Google:ClientId"] }
+                };
+                var payload = await GoogleJsonWebSignature.ValidateAsync(token, settings);
+
+                if (payload == null)
+                {
+                    response.Success = false;
+                    response.Message = "Token Google không hợp lệ";
+                    return response;
+                }
+
+                // Kiểm tra user có tồn tại
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+                if (user == null)
+                {
+                    // Tạo user mới nếu chưa tồn tại
+                    string randomPassword = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
+                    string passwordHash = BCrypt.Net.BCrypt.HashPassword(randomPassword);
+
+                    user = new User
+                    {
+                        Username = payload.Email.Split('@')[0], // hoặc có thể dùng payload.Name
+                        Email = payload.Email,
+                        FullName = payload.Name,
+                        Password = randomPassword,
+                        PasswordHash = passwordHash,
+                        RoleId = 2, // Role User
+                        CreatedAt = DateTime.UtcNow,
+                        IsVerification = true // Tài khoản Google đã được xá
+                    };
+
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+
+                    // Gửi email chào mừng
+                    await _emailService.SendWelcomeEmail(user.Email, user.Username);
+                }
+
+                if (user.IsBanned)
+                {
+                    response.Success = false;
+                    response.Message = "Tài khoản đã bị khóa";
+                    return response;
+                }
+
+                // Tạo JWT token
+                response.Data = GenerateJwtToken(user);
+                response.Message = "Đăng nhập bằng Google thành công";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Lỗi đăng nhập bằng Google: " + (ex.InnerException?.Message ?? ex.Message);
+            }
+
+            return response;
+        }
+
+        // ... rest of the code ...
     }
 }
+
