@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -35,6 +35,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
               "$type": "Bookmark",
@@ -50,8 +54,7 @@
               "RelativeToolTip": "SWP391_BE\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-19T16:18:25.169Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-19T16:18:25.169Z"
             },
             {
               "$type": "Document",
@@ -63,8 +66,7 @@
               "RelativeToolTip": "Data\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAB4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-19T16:18:04.998Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-19T16:18:04.998Z"
             },
             {
               "$type": "Document",
@@ -74,7 +76,7 @@
               "RelativeDocumentMoniker": "Data\\Models\\SkinCareManagementDbContext.cs",
               "ToolTip": "D:\\SWP_BE\\Data\\Models\\SkinCareManagementDbContext.cs",
               "RelativeToolTip": "Data\\Models\\SkinCareManagementDbContext.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAA/wCsAAAB8AAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAAcwCsAAAB8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-19T15:59:41.154Z",
               "EditorCaption": ""
@@ -89,8 +91,7 @@
               "RelativeToolTip": "Repo\\DashboardReportRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-19T15:54:57.129Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-19T15:54:57.129Z"
             }
           ]
         }
