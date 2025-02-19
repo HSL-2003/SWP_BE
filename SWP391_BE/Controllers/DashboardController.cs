@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service;
-using SWP391_BE.DTO;
+using SWP391_BE.DTOs;
 using Data.Models;
 
 namespace SWP391_BE.Controllers

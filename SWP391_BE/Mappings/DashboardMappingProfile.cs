@@ -1,6 +1,6 @@
 using AutoMapper;
 using Data.Models;
-using SWP391_BE.DTO;
+using SWP391_BE.DTOs;
 
 namespace SWP391_BE.Mappings
 {

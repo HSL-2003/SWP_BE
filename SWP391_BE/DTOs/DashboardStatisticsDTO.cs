@@ -1,4 +1,4 @@
-namespace SWP391_BE.DTO
+namespace SWP391_BE.DTOs
 {
     public class DashboardStatisticsDTO
     {
