@@ -50,6 +50,11 @@ builder.Services.AddScoped<ISkinRoutineRepository, SkinRoutineRepository>();
 builder.Services.AddScoped<ISkinRoutineService, SkinRoutineService>();
 builder.Services.AddAutoMapper(typeof(SkinRoutineMappingProfile));
 
+// Add these lines along with the other service registrations
+builder.Services.AddScoped<IDashboardReportRepository, DashboardReportRepository>();
+builder.Services.AddScoped<IDashboardReportService, DashboardReportService>();
+builder.Services.AddAutoMapper(typeof(DashboardMappingProfile));
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -69,12 +74,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            RoleClaimType = "role"
         };
     });
 builder.Services.AddAuthentication().AddGoogle(googleOptions =>
