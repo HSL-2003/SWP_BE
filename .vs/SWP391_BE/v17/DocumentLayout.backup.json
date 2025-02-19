@@ -82,11 +82,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 75,
+          "SelectedChildIndex": 1,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
+              "RelativeDocumentMoniker": "SWP391_BE\\Program.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
+              "RelativeToolTip": "SWP391_BE\\Program.cs",
+              "ViewState": "AQIAADAAAAAAAAAAAAAuwEQAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-05T11:37:48.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
+              "RelativeDocumentMoniker": "Service\\EmailService.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
+              "RelativeToolTip": "Service\\EmailService.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAIA3wB0AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-15T03:37:27.867Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -366,30 +387,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
-              "RelativeDocumentMoniker": "Service\\AuthService.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
-              "RelativeToolTip": "Service\\AuthService.cs",
-              "ViewState": "AQIAAFEAAAAAAAAAAAAIwGsAAABRAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T03:46:34.465Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
-              "RelativeDocumentMoniker": "SWP391_BE\\Program.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
-              "RelativeToolTip": "SWP391_BE\\Program.cs",
-              "ViewState": "AQIAADAAAAAAAAAAAAAuwEQAAABJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-05T11:37:48.047Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 9,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\IAuthService.cs",
@@ -423,19 +420,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-02-05T11:37:58.435Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "EmailService.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
-              "RelativeDocumentMoniker": "Service\\EmailService.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
-              "RelativeToolTip": "Service\\EmailService.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwCEAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T03:37:27.867Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -496,6 +480,22 @@
               "ViewState": "AQIAAAUAAAAAAAAAAADwvygAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-16T20:53:02.156Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
+              "RelativeDocumentMoniker": "Service\\AuthService.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
+              "RelativeToolTip": "Service\\AuthService.cs",
+              "ViewState": "AQIAAFEAAAAAAAAAAAAIwGsAAABRAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-15T03:46:34.465Z"
             },
             {
               "$type": "Document",
