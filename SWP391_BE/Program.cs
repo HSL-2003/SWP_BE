@@ -14,61 +14,66 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SkinCareManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SkinCareManagementDB")));
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add these lines in the service registration section
+// Add existing service registrations
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
 
-// Add these lines along with the other service registrations
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
 builder.Services.AddAutoMapper(typeof(OrderDetailMappingProfile));
 
-// Add these lines along with the other service registrations
 builder.Services.AddScoped<IPromotionRepository, PromotionRepository>();
 builder.Services.AddScoped<IPromotionService, PromotionService>();
 builder.Services.AddAutoMapper(typeof(PromotionMappingProfile));
 
-// Add these lines along with the other service registrations
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 
-// Add these lines along with the other service registrations
 builder.Services.AddScoped<ISkintypeRepository, SkintypeRepository>();
 builder.Services.AddScoped<ISkintypeService, SkintypeService>();
 builder.Services.AddAutoMapper(typeof(SkintypeMappingProfile));
 
-// Add these lines along with the other service registrations
 builder.Services.AddScoped<ISkinRoutineRepository, SkinRoutineRepository>();
 builder.Services.AddScoped<ISkinRoutineService, SkinRoutineService>();
 builder.Services.AddAutoMapper(typeof(SkinRoutineMappingProfile));
+
+// Add Payment related services
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<PayosService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+// CORS configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .SetIsOriginAllowed((host) => true);
+    });
 });
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
@@ -81,17 +86,36 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware order is important!
+app.UseRouting();
+app.UseCors("AllowAll");  // Must be after UseRouting
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Remove UseHttpsRedirection if testing with HTTP
+// app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+// Error handling middleware
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Unhandled exception: {ex}");
+        throw;
+    }
+});
+
+app.Run(); 
