@@ -61,10 +61,17 @@ public partial class SkinCareManagementDbContext : DbContext
             entity.HasKey(e => e.ReportId).HasName("PK__Dashboar__D5BD48E52B62A4F8");
 
             entity.Property(e => e.ReportId).HasColumnName("ReportID");
-            entity.Property(e => e.CreatedAt)
+            entity.Property(e => e.TotalSales).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.SalesGrowthRate).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.OrdersGrowthRate).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.UserGrowthRate).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.OverallGrowthRate).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.RevenueData).HasColumnType("nvarchar(max)");
+            entity.Property(e => e.OrdersData).HasColumnType("nvarchar(max)");
+            entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.ReportName).HasMaxLength(255);
+            entity.Property(e => e.TimeRange).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Feedback>(entity =>

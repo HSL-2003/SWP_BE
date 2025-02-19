@@ -1,0 +1,213 @@
+-- Tạo cơ sở dữ liệu với tên SkinCareManagementDB
+CREATE DATABASE SkinCareManagementDB;
+
+-- Sử dụng cơ sở dữ liệu vừa tạo
+USE SkinCareManagementDB;
+
+Tạo Table:
+
+-- Bảng Roles
+CREATE TABLE Roles (
+    RoleId INT PRIMARY KEY IDENTITY(1,1),
+    RoleName NVARCHAR(50) NOT NULL UNIQUE
+);
+
+INSERT INTO Roles (RoleName)
+VALUES 
+('Guest'), 
+('Customer'), 
+('Staff'), 
+('Manager');
+
+-- Bảng Users
+CREATE TABLE Users (
+    UserId INT PRIMARY KEY IDENTITY(1,1),
+    RoleId INT NOT NULL FOREIGN KEY REFERENCES Roles(RoleId),
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    Password NVARCHAR(255) NOT NULL,
+    PasswordHash NVARCHAR(255) NOT NULL,
+    FullName NVARCHAR(100),
+    Email NVARCHAR(100),
+    PhoneNumber NVARCHAR(15),
+    Address NVARCHAR(255),
+    IsVerification BIT NOT NULL DEFAULT 0,
+    IsBanned BIT NOT NULL DEFAULT 0,
+    ExpirationToken NVARCHAR(MAX),
+    VerificationToken NVARCHAR(MAX),
+    CreatedAt DATETIME
+);
+
+-- Bảng Skintypes
+CREATE TABLE Skintypes (
+    SkinTypeId INT PRIMARY KEY IDENTITY(1,1),
+    SkinTypeName NVARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Bảng SkinRoutines
+CREATE TABLE SkinRoutines (
+    RoutineId INT PRIMARY KEY IDENTITY(1,1),
+    SkinTypeId INT NOT NULL FOREIGN KEY REFERENCES Skintypes(SkinTypeId),
+    RoutineStep NVARCHAR(255) NOT NULL
+);
+
+-- Bảng Orders
+CREATE TABLE Orders (
+    OrderId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT NOT NULL FOREIGN KEY REFERENCES Users(UserId),
+    OrderDate DATETIME,
+    TotalAmount DECIMAL(18,2),
+    Status NVARCHAR(50),
+    PaymentMethod NVARCHAR(50)
+);
+
+-- Bảng OrderDetails
+CREATE TABLE OrderDetails (
+    OrderDetailId INT PRIMARY KEY IDENTITY(1,1),
+    OrderId INT NOT NULL FOREIGN KEY REFERENCES Orders(OrderId),
+    ProductId INT NOT NULL,
+    Quantity INT NOT NULL,
+    Price DECIMAL(18,2) NOT NULL
+);
+
+-- Bảng Payments
+CREATE TABLE Payments (
+    PaymentId INT PRIMARY KEY IDENTITY(1,1),
+    OrderId INT NOT NULL FOREIGN KEY REFERENCES Orders(OrderId),
+    PaymentDate DATETIME,
+    Amount DECIMAL(18,2),
+    PaymentStatus NVARCHAR(50)
+);
+
+-- Bảng PaymentHistory
+CREATE TABLE PaymentHistory (
+    HistoryId INT PRIMARY KEY IDENTITY(1,1),
+    PaymentId INT NOT NULL FOREIGN KEY REFERENCES Payments(PaymentId),
+    PaymentDate DATETIME,
+    Amount DECIMAL(18,2) NOT NULL,
+    PaymentStatus NVARCHAR(50) NOT NULL
+);
+
+-- Bảng Feedbacks
+CREATE TABLE Feedbacks (
+    FeedbackId INT PRIMARY KEY IDENTITY(1,1),
+    ProductId INT NOT NULL,
+    UserId INT NOT NULL FOREIGN KEY REFERENCES Users(UserId),
+    Rating INT,
+    Comment NVARCHAR(MAX),
+    CreatedAt DATETIME
+);
+
+-- Bảng Promotions
+CREATE TABLE Promotions (
+    PromotionId INT PRIMARY KEY IDENTITY(1,1),
+    PromotionName NVARCHAR(100),
+    DiscountPercentage DECIMAL(18,2),
+    StartDate DATETIME,
+    EndDate DATETIME
+);
+
+-- Bảng DashboardReports
+CREATE TABLE DashboardReports (
+    ReportId INT PRIMARY KEY IDENTITY(1,1),
+    TotalSales DECIMAL(18,2) NOT NULL,
+    SalesGrowthRate DECIMAL(18,2) NOT NULL,
+    TotalOrders INT NOT NULL,
+    OrdersGrowthRate DECIMAL(18,2) NOT NULL,
+    ActiveUsers INT NOT NULL,
+    UserGrowthRate DECIMAL(18,2) NOT NULL,
+    OverallGrowthRate DECIMAL(18,2) NOT NULL,
+    RevenueData NVARCHAR(MAX),
+    OrdersData NVARCHAR(MAX),
+    LastUpdated DATETIME NOT NULL,
+    TimeRange NVARCHAR(50)
+);
+
+
+
+
+
+INSERT DATA:
+
+
+-- Sample data for Users (4 records as requested)
+INSERT INTO Users (RoleId, Username, Password, PasswordHash, FullName, Email, PhoneNumber, Address, IsVerification, IsBanned, CreatedAt)
+VALUES 
+(1, 'guest1', 'guest123', 'hashedpassword1', 'Guest User', 'guest@example.com', NULL, NULL, 0, 0, GETDATE()),
+(2, 'customer1', 'customer123', 'hashedpassword2', 'John Doe', 'john@example.com', '0123456789', '123 Customer St', 1, 0, GETDATE()),
+(3, 'staff1', 'staff123', 'hashedpassword3', 'Jane Smith', 'jane@example.com', '0987654321', '456 Staff Ave', 1, 0, GETDATE()),
+(4, 'manager1', 'manager123', 'hashedpassword4', 'Mike Manager', 'mike@example.com', '0123123123', '789 Manager Rd', 1, 0, GETDATE());
+
+-- Sample data for Skintypes (3 records)
+INSERT INTO Skintypes (SkinTypeName)
+VALUES 
+('Oily Skin'),
+('Dry Skin'),
+('Combination Skin');
+
+-- Sample data for SkinRoutines (3 records)
+INSERT INTO SkinRoutines (SkinTypeId, RoutineStep)
+VALUES 
+(1, 'Cleanse with oil-control face wash'),
+(2, 'Apply moisturizing cream'),
+(3, 'Use balanced toner');
+
+-- Sample data for Orders (3 records)
+INSERT INTO Orders (UserId, OrderDate, TotalAmount, Status, PaymentMethod)
+VALUES 
+(2, DATEADD(day, -5, GETDATE()), 150.00, 'Completed', 'Credit Card'),
+(2, DATEADD(day, -3, GETDATE()), 200.00, 'Processing', 'PayPal'),
+(2, DATEADD(day, -1, GETDATE()), 175.00, 'Pending', 'Bank Transfer');
+
+-- Sample data for OrderDetails (3 records)
+INSERT INTO OrderDetails (OrderId, ProductId, Quantity, Price)
+VALUES 
+(1, 1, 2, 75.00),
+(2, 2, 1, 200.00),
+(3, 3, 3, 58.33);
+
+-- Sample data for Payments (3 records)
+INSERT INTO Payments (OrderId, PaymentDate, Amount, PaymentStatus)
+VALUES 
+(1, DATEADD(day, -5, GETDATE()), 150.00, 'Completed'),
+(2, DATEADD(day, -3, GETDATE()), 200.00, 'Processing'),
+(3, DATEADD(day, -1, GETDATE()), 175.00, 'Pending');
+
+-- Sample data for PaymentHistory (3 records)
+INSERT INTO PaymentHistory (PaymentId, PaymentDate, Amount, PaymentStatus)
+VALUES 
+(1, DATEADD(day, -5, GETDATE()), 150.00, 'Completed'),
+(2, DATEADD(day, -3, GETDATE()), 200.00, 'Processing'),
+(3, DATEADD(day, -1, GETDATE()), 175.00, 'Pending');
+
+-- Sample data for Feedbacks (3 records)
+INSERT INTO Feedbacks (ProductId, UserId, Rating, Comment, CreatedAt)
+VALUES 
+(1, 2, 5, 'Excellent product! Really helped with my skin concerns.', GETDATE()),
+(2, 2, 4, 'Good product but a bit pricey.', DATEADD(day, -2, GETDATE())),
+(3, 2, 5, 'Amazing results! Will buy again.', DATEADD(day, -4, GETDATE()));
+
+-- Sample data for Promotions (3 records)
+INSERT INTO Promotions (PromotionName, DiscountPercentage, StartDate, EndDate)
+VALUES 
+('Summer Sale', 15.00, DATEADD(day, -10, GETDATE()), DATEADD(day, 20, GETDATE())),
+('New Customer Discount', 10.00, DATEADD(day, -5, GETDATE()), DATEADD(day, 25, GETDATE())),
+('Holiday Special', 20.00, DATEADD(day, 10, GETDATE()), DATEADD(day, 40, GETDATE()));
+
+-- Sample data for DashboardReports (3 records)
+INSERT INTO DashboardReports (
+    TotalSales, 
+    SalesGrowthRate, 
+    TotalOrders, 
+    OrdersGrowthRate, 
+    ActiveUsers, 
+    UserGrowthRate, 
+    OverallGrowthRate, 
+    RevenueData, 
+    OrdersData, 
+    LastUpdated, 
+    TimeRange
+)
+VALUES 
+(5000.00, 15.5, 50, 10.2, 100, 5.5, 10.4, '{"daily":[300,450,500]}', '{"daily":[5,7,8]}', GETDATE(), 'Last 7 days'),
+(15000.00, 12.3, 150, 8.7, 300, 4.2, 8.4, '{"daily":[900,1200,1500]}', '{"daily":[15,20,25]}', DATEADD(day, -1, GETDATE()), 'Last 30 days'),
+(45000.00, 9.8, 450, 6.5, 900, 3.1, 6.5, '{"daily":[2700,3600,4500]}', '{"daily":[45,60,75]}', DATEADD(day, -2, GETDATE()), 'Last 90 days');
