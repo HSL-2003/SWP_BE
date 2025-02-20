@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using SWP391_BE.DTOs;
 using Data.Models;
+using Microsoft.Extensions.Logging;
 
 namespace SWP391_BE.Controllers
 {
@@ -12,11 +13,16 @@ namespace SWP391_BE.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(
+            IProductService productService, 
+            IMapper mapper,
+            ILogger<ProductController> logger)
         {
             _productService = productService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -40,10 +46,71 @@ namespace SWP391_BE.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> CreateProduct(CreateProductDTO createProductDTO)
         {
-            var product = _mapper.Map<Product>(createProductDTO);
-            await _productService.AddProductAsync(product);
-            return CreatedAtAction(nameof(GetProduct), new { id = product.ProductId }, 
-                _mapper.Map<ProductDTO>(product));
+            try
+            {
+                // Validate required relationships
+                if (!await ValidateRelationships(createProductDTO))
+                {
+                    return BadRequest("Invalid Brand, Volume, SkinType or Category ID");
+                }
+
+                var product = _mapper.Map<Product>(createProductDTO);
+                product.CreatedAt = DateTime.UtcNow;
+
+                await _productService.AddProductAsync(product);
+
+                // Add images
+                foreach (var imageUrl in createProductDTO.ImageUrls)
+                {
+                    product.Images.Add(new ProductImage { ImageUrl = imageUrl });
+                }
+
+                await _productService.UpdateProductAsync(product);
+
+                return CreatedAtAction(
+                    nameof(GetProduct), 
+                    new { id = product.ProductId }, 
+                    _mapper.Map<ProductDTO>(product)
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating product");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        private async Task<bool> ValidateRelationships(CreateProductDTO dto)
+        {
+            // Validate Brand exists
+            if (dto.BrandId.HasValue)
+            {
+                var brand = await _brandService.GetByIdAsync(dto.BrandId.Value);
+                if (brand == null) return false;
+            }
+
+            // Validate Volume exists
+            if (dto.VolumeId.HasValue)
+            {
+                var volume = await _volumeService.GetByIdAsync(dto.VolumeId.Value);
+                if (volume == null) return false;
+            }
+
+            // Validate SkinType exists
+            if (dto.SkinTypeId.HasValue)
+            {
+                var skinType = await _skinTypeService.GetByIdAsync(dto.SkinTypeId.Value);
+                if (skinType == null) return false;
+            }
+
+            // Validate Category exists
+            if (dto.CategoryId.HasValue)
+            {
+                var category = await _categoryService.GetByIdAsync(dto.CategoryId.Value);
+                if (category == null) return false;
+            }
+
+            return true;
         }
 
         [HttpPut("{id}")]
