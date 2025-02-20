@@ -53,6 +53,10 @@ builder.Services.AddAutoMapper(typeof(SkinRoutineMappingProfile));
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<PayosService>();
+// Add these lines along with the other service registrations
+builder.Services.AddScoped<IDashboardReportRepository, DashboardReportRepository>();
+builder.Services.AddScoped<IDashboardReportService, DashboardReportService>();
+builder.Services.AddAutoMapper(typeof(DashboardMappingProfile));
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -79,7 +83,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            RoleClaimType = "role"
         };
     });
 builder.Services.AddAuthentication().AddGoogle(googleOptions =>

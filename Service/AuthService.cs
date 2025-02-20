@@ -97,6 +97,7 @@ namespace Service
             try
             {
                 var user = await _context.Users
+                    .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Username == model.Username);
 
                 if (user == null)
@@ -271,12 +272,12 @@ namespace Service
         private string GenerateJwtToken(User user)
         {
             var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.RoleId.ToString()),
-            new Claim(ClaimTypes.Email, user.Email)
-        };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.RoleName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Token").Value!));
@@ -316,32 +317,38 @@ namespace Service
                     return response;
                 }
 
-                // Kiểm tra user có tồn tại
+                // Check if user exists
                 var user = await _context.Users
+                    .Include(u => u.Role)  // Include the Role
                     .FirstOrDefaultAsync(u => u.Email == payload.Email);
 
                 if (user == null)
                 {
-                    // Tạo user mới nếu chưa tồn tại
+                    // Create new user if doesn't exist
                     string randomPassword = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
                     string passwordHash = BCrypt.Net.BCrypt.HashPassword(randomPassword);
 
                     user = new User
                     {
-                        Username = payload.Email.Split('@')[0], // hoặc có thể dùng payload.Name
+                        Username = payload.Email.Split('@')[0],
                         Email = payload.Email,
                         FullName = payload.Name,
                         Password = randomPassword,
                         PasswordHash = passwordHash,
-                        RoleId = 2, // Role User
+                        RoleId = 2, // User Role
                         CreatedAt = DateTime.UtcNow,
-                        IsVerification = true // Tài khoản Google đã được xá
+                        IsVerification = true
                     };
 
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
 
-                    // Gửi email chào mừng
+                    // Reload user to get the Role
+                    user = await _context.Users
+                        .Include(u => u.Role)
+                        .FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+                    // Send welcome email
                     await _emailService.SendWelcomeEmail(user.Email, user.Username);
                 }
 
@@ -352,7 +359,6 @@ namespace Service
                     return response;
                 }
 
-                // Tạo JWT token
                 response.Data = GenerateJwtToken(user);
                 response.Message = "Đăng nhập bằng Google thành công";
             }
