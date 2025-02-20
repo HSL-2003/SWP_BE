@@ -3,32 +3,39 @@
   "WorkspaceRootPath": "D:\\Git\\SWP_BE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\dashboardreportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\dashboardreportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ACER\\.nuget\\packages\\facebook\\7.0.6\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -39,24 +46,12 @@
       "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\swp391_be.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|d:\\git\\swp_be\\swp391_be\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A1D4A93-9528-469F-8308-16BE31C1C524}|SWP391_BE\\SWP391_BE.csproj|solutionrelative:swp391_be\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\service.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -75,12 +70,20 @@
       "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\response\\serviceresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\data.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|d:\\git\\swp_be\\service\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DBF9CD29-97AA-4E4B-B9B2-61C3C329B470}|Service\\Service.csproj|solutionrelative:service\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\models\\skincaremanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\models\\skincaremanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|d:\\git\\swp_be\\data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7E318D82-7DB7-435D-BD3E-9D937A003905}|Data\\Data.csproj|solutionrelative:data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -90,7 +93,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 75,
+          "SelectedChildIndex": 71,
           "Children": [
             {
               "$type": "Bookmark",
@@ -306,6 +309,10 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:2:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
             },
             {
@@ -366,62 +373,107 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Product.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "Data\\Models\\Product.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\Data\\Models\\Product.cs",
+              "RelativeToolTip": "Data\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T06:20:41.413Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
+              "RelativeDocumentMoniker": "Service\\AuthService.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
+              "RelativeToolTip": "Service\\AuthService.cs",
+              "ViewState": "AQIAAE8BAAAAAAAAAAAgwHMBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-15T03:46:34.465Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "WeatherForecast.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\WeatherForecast.cs",
-              "RelativeDocumentMoniker": "SWP391_BE\\WeatherForecast.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\WeatherForecast.cs",
-              "RelativeToolTip": "SWP391_BE\\WeatherForecast.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "SWP391_BE\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "SWP391_BE\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T00:38:05.687Z",
+              "WhenOpened": "2025-02-15T04:18:03.012Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "Data\\appsettings.Development.json",
-              "ToolTip": "D:\\Git\\SWP_BE\\Data\\appsettings.Development.json",
-              "RelativeToolTip": "Data\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-20T00:11:36.781Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "EmailService.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
-              "RelativeDocumentMoniker": "Service\\EmailService.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
-              "RelativeToolTip": "Service\\EmailService.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAIA5wB0AAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T03:37:27.867Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
               "Title": "IAuthService.cs",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\IAuthService.cs",
               "RelativeDocumentMoniker": "Service\\IAuthService.cs",
               "ToolTip": "D:\\Git\\SWP_BE\\Service\\IAuthService.cs",
               "RelativeToolTip": "Service\\IAuthService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAAAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAcwBIAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T03:48:01.899Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\appsettings.json",
+              "RelativeDocumentMoniker": "SWP391_BE\\appsettings.json",
+              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\appsettings.json",
+              "RelativeToolTip": "SWP391_BE\\appsettings.json",
+              "ViewState": "AQIAAAEAAAAAAAAAAAAcwBQAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-05T11:37:58.435Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
+              "RelativeDocumentMoniker": "SWP391_BE\\Program.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
+              "RelativeToolTip": "SWP391_BE\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-05T11:37:48.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DashboardReportService.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\DashboardReportService.cs",
+              "RelativeDocumentMoniker": "Service\\DashboardReportService.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\Service\\DashboardReportService.cs",
+              "RelativeToolTip": "Service\\DashboardReportService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAA0AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T00:33:09.078Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "readme.txt",
+              "DocumentMoniker": "C:\\Users\\ACER\\.nuget\\packages\\facebook\\7.0.6\\readme.txt",
+              "ToolTip": "C:\\Users\\ACER\\.nuget\\packages\\facebook\\7.0.6\\readme.txt",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-02-17T00:31:49.544Z"
             },
             {
               "$type": "Document",
@@ -431,26 +483,25 @@
               "RelativeDocumentMoniker": "Data\\Models\\User.cs",
               "ToolTip": "D:\\Git\\SWP_BE\\Data\\Models\\User.cs",
               "RelativeToolTip": "Data\\Models\\User.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAzwCgAAAAAAAAA",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAwCgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T04:07:07.445Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\appsettings.json",
-              "RelativeDocumentMoniker": "SWP391_BE\\appsettings.json",
-              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\appsettings.json",
-              "RelativeToolTip": "SWP391_BE\\appsettings.json",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAUwC8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-05T11:37:58.435Z",
-              "EditorCaption": ""
+              "DocumentIndex": 6,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
+              "RelativeDocumentMoniker": "Service\\EmailService.cs",
+              "ToolTip": "D:\\Git\\SWP_BE\\Service\\EmailService.cs",
+              "RelativeToolTip": "Service\\EmailService.cs",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAcwIoAAAA1AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-15T03:37:27.867Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\appsettings.Development.json",
               "RelativeDocumentMoniker": "SWP391_BE\\appsettings.Development.json",
@@ -462,88 +513,25 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "SWP391_BE.csproj",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
               "RelativeDocumentMoniker": "SWP391_BE\\SWP391_BE.csproj",
               "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
               "RelativeToolTip": "SWP391_BE\\SWP391_BE.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-02-16T20:06:05.851Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
-              "RelativeDocumentMoniker": "SWP391_BE\\Program.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\Program.cs",
-              "RelativeToolTip": "SWP391_BE\\Program.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAuwEQAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-05T11:37:48.047Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Data.csproj",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\Data.csproj",
-              "RelativeDocumentMoniker": "Data\\Data.csproj",
-              "ToolTip": "D:\\Git\\SWP_BE\\Data\\Data.csproj",
-              "RelativeToolTip": "Data\\Data.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-02-15T03:52:07.055Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\appsettings.json",
-              "RelativeDocumentMoniker": "Data\\appsettings.json",
-              "ToolTip": "D:\\Git\\SWP_BE\\Data\\appsettings.json",
-              "RelativeToolTip": "Data\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-05T11:37:13.724Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
-              "RelativeDocumentMoniker": "Service\\AuthService.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\Service\\AuthService.cs",
-              "RelativeToolTip": "Service\\AuthService.cs",
-              "ViewState": "AQIAAFEAAAAAAAAAAAAIwGsAAABRAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T03:46:34.465Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "SWP391_BE\\Controllers\\AuthController.cs",
-              "ToolTip": "D:\\Git\\SWP_BE\\SWP391_BE\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "SWP391_BE\\Controllers\\AuthController.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAABsAAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T04:18:03.012Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 14,
               "Title": "Repo.csproj",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\Repo\\Repo.csproj",
               "RelativeDocumentMoniker": "Repo\\Repo.csproj",
               "ToolTip": "D:\\Git\\SWP_BE\\Repo\\Repo.csproj",
               "RelativeToolTip": "Repo\\Repo.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-02-16T20:28:20.826Z"
             },
@@ -555,25 +543,25 @@
               "RelativeDocumentMoniker": "Service\\UserService.cs",
               "ToolTip": "D:\\Git\\SWP_BE\\Service\\UserService.cs",
               "RelativeToolTip": "Service\\UserService.cs",
-              "ViewState": "AQIAAAUAAAAAAAAAAADwvygAAAAAAAAA",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAwwCgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-16T20:53:02.156Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "Service.csproj",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\Service\\Service.csproj",
               "RelativeDocumentMoniker": "Service\\Service.csproj",
               "ToolTip": "D:\\Git\\SWP_BE\\Service\\Service.csproj",
               "RelativeToolTip": "Service\\Service.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAA2AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-02-15T03:29:46.785Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 15,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\SWP391_BE\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "SWP391_BE\\Properties\\launchSettings.json",
@@ -585,7 +573,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 16,
               "Title": "ServiceResponse.cs",
               "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\Response\\ServiceResponse.cs",
               "RelativeDocumentMoniker": "Data\\Response\\ServiceResponse.cs",
@@ -594,6 +582,18 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T03:52:34.719Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Data.csproj",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\Data.csproj",
+              "RelativeDocumentMoniker": "Data\\Data.csproj",
+              "ToolTip": "D:\\Git\\SWP_BE\\Data\\Data.csproj",
+              "RelativeToolTip": "Data\\Data.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-02-15T03:52:07.055Z"
             },
             {
               "$type": "Document",
@@ -606,6 +606,18 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T03:30:15.01Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Git\\SWP_BE\\Data\\appsettings.json",
+              "RelativeDocumentMoniker": "Data\\appsettings.json",
+              "ToolTip": "D:\\Git\\SWP_BE\\Data\\appsettings.json",
+              "RelativeToolTip": "Data\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-05T11:37:13.724Z"
             },
             {
               "$type": "Document",

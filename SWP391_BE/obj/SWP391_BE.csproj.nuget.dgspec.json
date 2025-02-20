@@ -10,14 +10,12 @@
         "projectUniqueName": "D:\\Git\\SWP_BE\\Data\\Data.csproj",
         "projectName": "Data",
         "projectPath": "D:\\Git\\SWP_BE\\Data\\Data.csproj",
-        "packagesPath": "C:\\Users\\wukon\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
         "outputPath": "D:\\Git\\SWP_BE\\Data\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\app\\New folder (2)\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\wukon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\Git\\SWP_BE\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,7 +23,6 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -129,14 +126,12 @@
         "projectUniqueName": "D:\\Git\\SWP_BE\\Repo\\Repo.csproj",
         "projectName": "Repo",
         "projectPath": "D:\\Git\\SWP_BE\\Repo\\Repo.csproj",
-        "packagesPath": "C:\\Users\\wukon\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
         "outputPath": "D:\\Git\\SWP_BE\\Repo\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\app\\New folder (2)\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\wukon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\Git\\SWP_BE\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -144,7 +139,6 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -224,14 +218,12 @@
         "projectUniqueName": "D:\\Git\\SWP_BE\\Service\\Service.csproj",
         "projectName": "Service",
         "projectPath": "D:\\Git\\SWP_BE\\Service\\Service.csproj",
-        "packagesPath": "C:\\Users\\wukon\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
         "outputPath": "D:\\Git\\SWP_BE\\Service\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\app\\New folder (2)\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\wukon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\Git\\SWP_BE\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -239,7 +231,6 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -322,14 +313,12 @@
         "projectUniqueName": "D:\\Git\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
         "projectName": "SWP391_BE",
         "projectPath": "D:\\Git\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
-        "packagesPath": "C:\\Users\\wukon\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
         "outputPath": "D:\\Git\\SWP_BE\\SWP391_BE\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\app\\New folder (2)\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\wukon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\Git\\SWP_BE\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -337,7 +326,6 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
