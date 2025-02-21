@@ -21,16 +21,20 @@ public class PaymentController : ControllerBase
     {
         try 
         {
+            _logger.LogInformation($"Creating payment for order {request.OrderId} with amount {request.Amount}");
+            
             var response = await _payosService.CreatePaymentRequest(
                 request.OrderId,
                 request.Amount,
                 request.Description
             );
+            
+            _logger.LogInformation($"Payment created successfully: {response}");
             return Ok(response);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Payment creation error: {ex}");
+            _logger.LogError($"Payment creation error: {ex}");
             return StatusCode(500, new { error = ex.Message });
         }
     }

@@ -3,174 +3,255 @@ using System.Text;
 using System.Text.Json;
 using Data.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Service
 {
-    public class PayosService
+    public interface IPayosService
     {
-        private readonly IPaymentService _paymentService;
-        private readonly HttpClient _httpClient;
-        private readonly PayosConfig _config;
+        Task<PaymentResponse> CreatePaymentRequest(int orderId, decimal amount, string description);
+        Task HandleWebhook(PayosWebhookPayload payload, string signature);
+    }
 
-        public PayosService(IPaymentService paymentService, IConfiguration configuration)
+    public class PayosService : IPayosService
+    {
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
+        private readonly IPaymentService _paymentService;
+        private readonly ILogger<PayosService> _logger;
+
+        public PayosService(
+            IConfiguration configuration, 
+            IPaymentService paymentService,
+            ILogger<PayosService> logger)
         {
+            _configuration = configuration;
             _paymentService = paymentService;
-            _httpClient = new HttpClient();
+            _logger = logger;
             
-            // Đọc config một cách đơn giản hơn
-            _config = new PayosConfig
+            var handler = new HttpClientHandler
             {
-                ClientId = configuration["Payos:ClientId"],
-                ApiKey = configuration["Payos:ApiKey"],
-                ChecksumKey = configuration["Payos:ChecksumKey"],
-                ApiUrl = configuration["Payos:ApiUrl"],
-                ReturnUrl = configuration["Payos:ReturnUrl"],
-                CancelUrl = configuration["Payos:CancelUrl"],
-                WebhookUrl = configuration["Payos:WebhookUrl"]
+                ServerCertificateCustomValidationCallback = 
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             };
+            _httpClient = new HttpClient(handler);
+            
+            // Add required headers
+            _httpClient.DefaultRequestHeaders.Add("x-client-id", _configuration["Payos:ClientId"]);
+            _httpClient.DefaultRequestHeaders.Add("x-api-key", _configuration["Payos:ApiKey"]);
         }
 
         public async Task<PaymentResponse> CreatePaymentRequest(int orderId, decimal amount, string description)
         {
-            var orderCode = $"ORDER_{orderId}_{DateTime.Now.Ticks}";
-            
-            var paymentData = new
+            try
             {
-                orderCode = orderCode,
-                amount = (long)amount,
-                description = description,
-                cancelUrl = _config.CancelUrl,
-                returnUrl = _config.ReturnUrl,
-                signature = CreateSignature(orderCode, amount, description)
-            };
+                var checksumKey = _configuration["Payos:ChecksumKey"] 
+                    ?? throw new InvalidOperationException("Payos:ChecksumKey is not configured");
+                var cancelUrl = _configuration["Payos:CancelUrl"]
+                    ?? throw new InvalidOperationException("Payos:CancelUrl is not configured");
+                var returnUrl = _configuration["Payos:ReturnUrl"]
+                    ?? throw new InvalidOperationException("Payos:ReturnUrl is not configured");
 
-            var request = new HttpRequestMessage(HttpMethod.Post, _config.ApiUrl)
-            {
-                Content = new StringContent(JsonSerializer.Serialize(paymentData), Encoding.UTF8, "application/json")
-            };
+                var payosRequest = new
+                {
+                    orderCode = orderId,
+                    amount = (int)(amount * 100),
+                    description = description,
+                    cancelUrl = cancelUrl,
+                    returnUrl = returnUrl,
+                    items = new object[] { },
+                    buyerName = "",
+                    buyerEmail = "",
+                    buyerPhone = "",
+                    buyerAddress = ""
+                };
 
-            request.Headers.Add("x-client-id", _config.ClientId);
-            request.Headers.Add("x-api-key", _config.ApiKey);
+                // Create signature string
+                var dataStr = $"amount={payosRequest.amount}" +
+                             $"&cancelUrl={payosRequest.cancelUrl}" +
+                             $"&description={payosRequest.description}" +
+                             $"&orderCode={payosRequest.orderCode}" +
+                             $"&returnUrl={payosRequest.returnUrl}";
 
-            var response = await _httpClient.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
+                var signature = CreateHmacSignature(dataStr, checksumKey);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception($"PayOS request failed: {content}");
+                var fullRequest = new
+                {
+                    payosRequest.orderCode,
+                    payosRequest.amount,
+                    payosRequest.description,
+                    payosRequest.cancelUrl,
+                    payosRequest.returnUrl,
+                    signature,
+                    payosRequest.items,
+                    payosRequest.buyerName,
+                    payosRequest.buyerEmail,
+                    payosRequest.buyerPhone,
+                    payosRequest.buyerAddress
+                };
+
+                var json = JsonSerializer.Serialize(fullRequest);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(_configuration["Payos:ApiUrl"], content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogError($"Payment creation failed: {responseContent}");
+                    throw new Exception($"Payment creation failed: {responseContent}");
+                }
+
+                var paymentResponse = JsonSerializer.Deserialize<PaymentResponse>(responseContent);
+                if (paymentResponse == null)
+                {
+                    throw new Exception("Failed to deserialize payment response");
+                }
+
+                // Create payment record in database
+                await _paymentService.AddPaymentAsync(new Payment
+                {
+                    OrderId = orderId,
+                    Amount = amount,
+                    PaymentDate = DateTime.Now,
+                    PaymentStatus = "Pending"
+                });
+
+                return paymentResponse;
             }
-
-            // Tạo payment record với trạng thái PENDING
-            var payment = new Payment
+            catch (Exception ex)
             {
-                OrderId = orderId,
-                Amount = amount,
-                PaymentDate = DateTime.Now,
-                PaymentStatus = "PENDING"
-            };
+                _logger.LogError($"Payment request failed: {ex.Message}");
+                throw;
+            }
+        }
 
-            await _paymentService.AddPaymentAsync(payment);
+        private string CreateHmacSignature(string data, string key)
+        {
+            var keyBytes = Encoding.UTF8.GetBytes(key ?? throw new ArgumentNullException(nameof(key)));
+            var messageBytes = Encoding.UTF8.GetBytes(data);
 
-            return JsonSerializer.Deserialize<PaymentResponse>(content);
+            using (var hmac = new HMACSHA256(keyBytes))
+            {
+                var hashBytes = hmac.ComputeHash(messageBytes);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+            }
         }
 
         public async Task HandleWebhook(PayosWebhookPayload payload, string signature)
         {
             try
             {
+                if (payload.Data == null)
+                {
+                    throw new ArgumentException("Webhook payload data is null");
+                }
+
+                if (string.IsNullOrEmpty(payload.Data.OrderCode))
+                {
+                    throw new ArgumentException("Order code is missing in webhook data");
+                }
+
+                if (string.IsNullOrEmpty(payload.Data.TransactionDateTime))
+                {
+                    throw new ArgumentException("Transaction date time is missing in webhook data");
+                }
+
                 if (!VerifyWebhookSignature(payload, signature))
                 {
+                    _logger.LogWarning("Invalid webhook signature received");
                     throw new Exception("Invalid webhook signature");
                 }
 
-                // Extract order info
-                var orderCode = payload.Data.OrderCode;
+                var orderCode = int.Parse(payload.Data.OrderCode);
                 var amount = payload.Data.Amount;
-                var status = payload.Data.Code == "00" ? "PAID" : "FAILED";
+                var status = payload.Code == "00" ? "PAID" : "FAILED";
+                var transactionDateTime = DateTime.Parse(payload.Data.TransactionDateTime);
 
-                // Update payment in database
-                var payment = await _paymentService.GetPaymentByOrderIdAsync(int.Parse(orderCode));
-                if (payment != null)
+                var payment = await _paymentService.GetPaymentByOrderIdAsync(orderCode);
+                if (payment == null)
                 {
-                    payment.PaymentStatus = status;
-                    payment.PaymentDate = DateTime.Parse(payload.Data.TransactionDateTime);
-                    await _paymentService.UpdatePaymentAsync(payment);
-
-                    // Add payment history
-                    var history = new PaymentHistory
-                    {
-                        PaymentId = payment.PaymentId,
-                        PaymentDate = DateTime.Parse(payload.Data.TransactionDateTime),
-                        Amount = amount,
-                        PaymentStatus = status
-                    };
-                    await _paymentService.AddPaymentHistoryAsync(history);
+                    _logger.LogWarning($"Payment not found for order {orderCode}");
+                    throw new Exception($"Payment not found for order {orderCode}");
                 }
+
+                payment.PaymentStatus = status;
+                payment.PaymentDate = transactionDateTime;
+                await _paymentService.UpdatePaymentAsync(payment);
+
+                await _paymentService.AddPaymentHistoryAsync(new PaymentHistory
+                {
+                    PaymentId = payment.PaymentId,
+                    PaymentDate = transactionDateTime,
+                    Amount = amount,
+                    PaymentStatus = status
+                });
+
+                _logger.LogInformation($"Webhook processed successfully for order {orderCode}");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to process webhook: {ex.Message}");
+                _logger.LogError($"Failed to process webhook: {ex.Message}");
+                throw;
             }
-        }
-
-        private string CreateSignature(string orderCode, decimal amount, string description)
-        {
-            var signData = $"{orderCode}|{amount}|{description}|{_config.CancelUrl}|{_config.ReturnUrl}";
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_config.ChecksumKey));
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(signData));
-            return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
 
         private bool VerifyWebhookSignature(PayosWebhookPayload payload, string signature)
         {
-            // Verify using payload.Signature instead of header signature
             return payload.Signature == signature;
         }
     }
 
     public class PayosConfig
     {
-        public string ClientId { get; set; }
-        public string ApiKey { get; set; }
-        public string ChecksumKey { get; set; }
-        public string ApiUrl { get; set; }
-        public string ReturnUrl { get; set; }
-        public string CancelUrl { get; set; }
-        public string WebhookUrl { get; set; }
+        public string? ClientId { get; set; }
+        public string? ApiKey { get; set; }
+        public string? ChecksumKey { get; set; }
+        public string? ApiUrl { get; set; }
+        public string? ReturnUrl { get; set; }
+        public string? CancelUrl { get; set; }
+        public string? WebhookUrl { get; set; }
     }
 
     public class PaymentResponse
     {
-        public string CheckoutUrl { get; set; }
-        public string QrCode { get; set; }
-        // Thêm các properties khác nếu cần
+        public string? Code { get; set; }
+        public string? Desc { get; set; }
+        public PaymentData? Data { get; set; }
+    }
+
+    public class PaymentData
+    {
+        public string? CheckoutUrl { get; set; }
+        public string? QrCode { get; set; }
+        public string? PaymentLinkId { get; set; }
     }
 
     public class PayosWebhookPayload
     {
-        public string Code { get; set; }
-        public string Desc { get; set; }
-        public PayosWebhookData Data { get; set; }
-        public string Signature { get; set; }
+        public string? Code { get; set; }
+        public string? Desc { get; set; }
+        public PayosWebhookData? Data { get; set; }
+        public string? Signature { get; set; }
     }
 
     public class PayosWebhookData
     {
-        public string OrderCode { get; set; }
+        public string? OrderCode { get; set; }
         public decimal Amount { get; set; }
-        public string Description { get; set; }
-        public string AccountNumber { get; set; }
-        public string Reference { get; set; }
-        public string TransactionDateTime { get; set; }
-        public string PaymentLinkId { get; set; }
-        public string Code { get; set; }
-        public string Desc { get; set; }
-        public string CounterAccountBankId { get; set; }
-        public string CounterAccountBankName { get; set; }
-        public string CounterAccountName { get; set; }
-        public string CounterAccountNumber { get; set; }
-        public string VirtualAccountName { get; set; }
-        public string VirtualAccountNumber { get; set; }
-        public string Currency { get; set; }
+        public string? Description { get; set; }
+        public string? AccountNumber { get; set; }
+        public string? Reference { get; set; }
+        public string? TransactionDateTime { get; set; }
+        public string? PaymentLinkId { get; set; }
+        public string? Code { get; set; }
+        public string? Desc { get; set; }
+        public string? CounterAccountBankId { get; set; }
+        public string? CounterAccountBankName { get; set; }
+        public string? CounterAccountName { get; set; }
+        public string? CounterAccountNumber { get; set; }
+        public string? VirtualAccountName { get; set; }
+        public string? VirtualAccountNumber { get; set; }
+        public string? Currency { get; set; }
     }
 } 

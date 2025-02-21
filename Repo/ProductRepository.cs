@@ -14,12 +14,24 @@ namespace Repo
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Volume)
+                .Include(p => p.SkinType)
+                .Include(p => p.Category)
+                .Include(p => p.Images)
+                .ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Volume)
+                .Include(p => p.SkinType)
+                .Include(p => p.Category)
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
         public async Task AddAsync(Product product)
@@ -36,9 +48,16 @@ namespace Repo
 
         public async Task DeleteAsync(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.ProductId == id);
+            
             if (product != null)
             {
+                if (product.Images != null)
+                {
+                    _context.Set<ProductImage>().RemoveRange(product.Images);
+                }
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
