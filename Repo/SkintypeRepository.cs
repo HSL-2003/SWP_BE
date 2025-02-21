@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repo
 {
-    public class SkintypeRepository : ISkintypeRepository
+    public class SkinTypeRepository : ISkinTypeRepository
     {
         private readonly SkinCareManagementDbContext _context;
 
-        public SkintypeRepository(SkinCareManagementDbContext context)
+        public SkinTypeRepository(SkinCareManagementDbContext context)
         {
             _context = context;
         }
@@ -22,24 +22,24 @@ namespace Repo
             return await _context.Skintypes.FindAsync(id);
         }
 
-        public async Task AddAsync(Skintype skintype)
+        public async Task AddAsync(Skintype skinType)
         {
-            await _context.Skintypes.AddAsync(skintype);
+            await _context.Skintypes.AddAsync(skinType);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Skintype skintype)
+        public async Task UpdateAsync(Skintype skinType)
         {
-            _context.Skintypes.Update(skintype);
+            _context.Skintypes.Update(skinType);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var skintype = await _context.Skintypes.FindAsync(id);
-            if (skintype != null)
+            var skinType = await _context.Skintypes.FindAsync(id);
+            if (skinType != null)
             {
-                _context.Skintypes.Remove(skintype);
+                _context.Skintypes.Remove(skinType);
                 await _context.SaveChangesAsync();
             }
         }

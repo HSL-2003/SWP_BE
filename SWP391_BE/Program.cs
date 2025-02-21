@@ -41,9 +41,9 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 
-builder.Services.AddScoped<ISkintypeRepository, SkintypeRepository>();
-builder.Services.AddScoped<ISkintypeService, SkintypeService>();
-builder.Services.AddAutoMapper(typeof(SkintypeMappingProfile));
+builder.Services.AddScoped<ISkinTypeRepository, SkinTypeRepository>();
+builder.Services.AddScoped<ISkinTypeService, SkinTypeService>();
+builder.Services.AddAutoMapper(typeof(SkinTypeMappingProfile));
 
 builder.Services.AddScoped<ISkinRoutineRepository, SkinRoutineRepository>();
 builder.Services.AddScoped<ISkinRoutineService, SkinRoutineService>();

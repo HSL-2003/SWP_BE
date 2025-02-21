@@ -127,17 +127,24 @@ namespace SWP391_BE.Controllers
                 var product = _mapper.Map<Product>(createProductDTO);
                 product.CreatedAt = DateTime.UtcNow;
 
-                var createdProduct = await _productService.AddProductAsync(product);
-                
+                // Add images
                 if (createProductDTO.ImageUrls?.Any() == true)
                 {
-                    await _productService.UpdateProductImagesAsync(createdProduct.ProductId, createProductDTO.ImageUrls);
+                    product.Images = createProductDTO.ImageUrls.Select(url => new ProductImage
+                    {
+                        ImageUrl = url,
+                        IsMainImage = product.Images.Count == 0 // First image is main image
+                    }).ToList();
                 }
 
+                var createdProduct = await _productService.AddProductAsync(product);
+                
+                // Fetch the complete product with all navigation properties
+                var completeProduct = await _productService.GetProductByIdAsync(createdProduct.ProductId);
                 return CreatedAtAction(
                     nameof(GetProduct),
                     new { id = createdProduct.ProductId },
-                    _mapper.Map<ProductDTO>(createdProduct)
+                    _mapper.Map<ProductDTO>(completeProduct)
                 );
             }
             catch (Exception ex)
@@ -159,13 +166,20 @@ namespace SWP391_BE.Controllers
                 }
 
                 _mapper.Map(updateProductDTO, existingProduct);
-                await _productService.UpdateProductAsync(existingProduct);
 
+                // Update images
                 if (updateProductDTO.ImageUrls?.Any() == true)
                 {
-                    await _productService.UpdateProductImagesAsync(id, updateProductDTO.ImageUrls);
+                    existingProduct.Images.Clear();
+                    existingProduct.Images = updateProductDTO.ImageUrls.Select(url => new ProductImage
+                    {
+                        ImageUrl = url,
+                        ProductId = id,
+                        IsMainImage = existingProduct.Images.Count == 0 // First image is main image
+                    }).ToList();
                 }
 
+                await _productService.UpdateProductAsync(existingProduct);
                 return NoContent();
             }
             catch (Exception ex)

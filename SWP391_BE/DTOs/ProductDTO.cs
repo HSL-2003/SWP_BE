@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SWP391_BE.DTOs
 {
     public class ProductDTO

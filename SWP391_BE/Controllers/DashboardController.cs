@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using SWP391_BE.DTOs;
 using Data.Models;
+using Microsoft.Extensions.Logging;
 
 namespace SWP391_BE.Controllers
 {
@@ -14,32 +15,39 @@ namespace SWP391_BE.Controllers
     {
         private readonly IDashboardReportService _dashboardService;
         private readonly IMapper _mapper;
+        private readonly ILogger<DashboardController> _logger;
 
-        public DashboardController(IDashboardReportService dashboardService, IMapper mapper)
+        public DashboardController(
+            IDashboardReportService dashboardService, 
+            IMapper mapper,
+            ILogger<DashboardController> logger)
         {
             _dashboardService = dashboardService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // CRUD Operations
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<DashboardStatisticsDTO>>> GetAllReports()
         {
             try
             {
                 var reports = await _dashboardService.GetAllDashboardReportsAsync();
-                var reportsDto = _mapper.Map<IEnumerable<DashboardStatisticsDTO>>(reports);
-                return Ok(reportsDto);
+                if (!reports.Any())
+                {
+                    return NoContent();
+                }
+                return Ok(_mapper.Map<IEnumerable<DashboardStatisticsDTO>>(reports));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving all dashboard reports");
+                return StatusCode(500, "An error occurred while retrieving dashboard reports");
             }
         }
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<DashboardStatisticsDTO>> GetReportById(int id)
         {
             try
@@ -49,33 +57,40 @@ namespace SWP391_BE.Controllers
                 {
                     return NotFound($"Dashboard report with ID {id} not found");
                 }
-                var reportDto = _mapper.Map<DashboardStatisticsDTO>(report);
-                return Ok(reportDto);
+                return Ok(_mapper.Map<DashboardStatisticsDTO>(report));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving dashboard report {Id}", id);
+                return StatusCode(500, "An error occurred while retrieving the dashboard report");
             }
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ActionResult<DashboardStatisticsDTO>> CreateReport([FromBody] DashboardStatisticsDTO reportDto)
         {
             try
             {
+                if (reportDto == null)
+                {
+                    return BadRequest("Report data is required");
+                }
+
                 var report = _mapper.Map<DashboardReport>(reportDto);
+                report.LastUpdated = DateTime.UtcNow;
                 await _dashboardService.AddDashboardReportAsync(report);
-                return CreatedAtAction(nameof(GetReportById), new { id = report.ReportId }, reportDto);
+
+                var createdReportDto = _mapper.Map<DashboardStatisticsDTO>(report);
+                return CreatedAtAction(nameof(GetReportById), new { id = report.ReportId }, createdReportDto);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error creating dashboard report");
+                return StatusCode(500, "An error occurred while creating the dashboard report");
             }
         }
 
         [HttpPut("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult> UpdateReport(int id, [FromBody] DashboardStatisticsDTO reportDto)
         {
             try
@@ -88,17 +103,19 @@ namespace SWP391_BE.Controllers
 
                 var report = _mapper.Map<DashboardReport>(reportDto);
                 report.ReportId = id;
+                report.LastUpdated = DateTime.UtcNow;
                 await _dashboardService.UpdateDashboardReportAsync(report);
+
                 return NoContent();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error updating dashboard report {Id}", id);
+                return StatusCode(500, "An error occurred while updating the dashboard report");
             }
         }
 
         [HttpDelete("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult> DeleteReport(int id)
         {
             try
@@ -114,81 +131,102 @@ namespace SWP391_BE.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error deleting dashboard report {Id}", id);
+                return StatusCode(500, "An error occurred while deleting the dashboard report");
             }
         }
 
         // Dashboard Statistics Endpoints
         [HttpGet("statistics")]
-        [AllowAnonymous]
         public async Task<ActionResult<DashboardStatisticsDTO>> GetDashboardStatistics([FromQuery] string timeRange = "Last 30 days")
         {
             try
             {
                 var statistics = await _dashboardService.GetDashboardStatisticsAsync(timeRange);
-                var statisticsDto = _mapper.Map<DashboardStatisticsDTO>(statistics);
-                return Ok(statisticsDto);
+                if (statistics == null)
+                {
+                    return NotFound("No dashboard statistics found for the specified time range");
+                }
+                return Ok(_mapper.Map<DashboardStatisticsDTO>(statistics));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving dashboard statistics for time range {TimeRange}", timeRange);
+                return StatusCode(500, "An error occurred while retrieving dashboard statistics");
             }
         }
 
         [HttpGet("history")]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<DashboardStatisticsDTO>>> GetDashboardHistory(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate)
         {
             try
             {
+                if (startDate > endDate)
+                {
+                    return BadRequest("Start date must be before end date");
+                }
+
                 var history = await _dashboardService.GetDashboardHistoryAsync(startDate, endDate);
-                var historyDto = _mapper.Map<IEnumerable<DashboardStatisticsDTO>>(history);
-                return Ok(historyDto);
+                if (!history.Any())
+                {
+                    return NoContent();
+                }
+                return Ok(_mapper.Map<IEnumerable<DashboardStatisticsDTO>>(history));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving dashboard history for period {StartDate} to {EndDate}", startDate, endDate);
+                return StatusCode(500, "An error occurred while retrieving dashboard history");
             }
         }
 
         [HttpGet("sales")]
-        [AllowAnonymous]
         public async Task<ActionResult<decimal>> GetTotalSales(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate)
         {
             try
             {
+                if (startDate > endDate)
+                {
+                    return BadRequest("Start date must be before end date");
+                }
+
                 var totalSales = await _dashboardService.GetTotalSalesAsync(startDate, endDate);
                 return Ok(totalSales);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving total sales for period {StartDate} to {EndDate}", startDate, endDate);
+                return StatusCode(500, "An error occurred while retrieving total sales");
             }
         }
 
         [HttpGet("orders")]
-        [AllowAnonymous]
         public async Task<ActionResult<int>> GetTotalOrders(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate)
         {
             try
             {
+                if (startDate > endDate)
+                {
+                    return BadRequest("Start date must be before end date");
+                }
+
                 var totalOrders = await _dashboardService.GetTotalOrdersAsync(startDate, endDate);
                 return Ok(totalOrders);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving total orders for period {StartDate} to {EndDate}", startDate, endDate);
+                return StatusCode(500, "An error occurred while retrieving total orders");
             }
         }
 
         [HttpGet("active-users")]
-        [AllowAnonymous]
         public async Task<ActionResult<int>> GetActiveUsers()
         {
             try
@@ -198,12 +236,12 @@ namespace SWP391_BE.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error retrieving active users count");
+                return StatusCode(500, "An error occurred while retrieving active users count");
             }
         }
 
         [HttpPost("refresh")]
-        [AllowAnonymous]
         public async Task<ActionResult> RefreshDashboardStatistics([FromQuery] string timeRange = "Last 30 days")
         {
             try
@@ -213,7 +251,8 @@ namespace SWP391_BE.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error refreshing dashboard statistics for time range {TimeRange}", timeRange);
+                return StatusCode(500, "An error occurred while refreshing dashboard statistics");
             }
         }
     }

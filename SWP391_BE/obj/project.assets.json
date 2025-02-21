@@ -5298,20 +5298,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\lequa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Git\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
+      "projectUniqueName": "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
       "projectName": "SWP391_BE",
-      "projectPath": "D:\\Git\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\SWP_BE\\SWP391_BE\\obj\\",
+      "projectPath": "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
+      "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
+      "outputPath": "D:\\SWP_BE\\SWP391_BE\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "D:\\Git\\SWP_BE\\NuGet.Config",
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "D:\\SWP_BE\\NuGet.Config",
+        "C:\\Users\\lequa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5325,11 +5325,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Git\\SWP_BE\\Data\\Data.csproj": {
-              "projectPath": "D:\\Git\\SWP_BE\\Data\\Data.csproj"
+            "D:\\SWP_BE\\Data\\Data.csproj": {
+              "projectPath": "D:\\SWP_BE\\Data\\Data.csproj"
             },
-            "D:\\Git\\SWP_BE\\Service\\Service.csproj": {
-              "projectPath": "D:\\Git\\SWP_BE\\Service\\Service.csproj"
+            "D:\\SWP_BE\\Service\\Service.csproj": {
+              "projectPath": "D:\\SWP_BE\\Service\\Service.csproj"
             }
           }
         }
@@ -5344,7 +5344,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -5426,7 +5426,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

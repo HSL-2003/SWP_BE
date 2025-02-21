@@ -17,39 +17,98 @@ namespace Service
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await _productRepository.GetAllAsync();
+            try
+            {
+                return await _productRepository.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting all products");
+                throw;
+            }
         }
 
         public async Task<Product?> GetProductByIdAsync(int id)
         {
-            return await _productRepository.GetByIdAsync(id);
+            try
+            {
+                var product = await _productRepository.GetByIdAsync(id);
+                if (product == null)
+                {
+                    _logger.LogWarning("Product with ID {Id} not found", id);
+                }
+                return product;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting product with ID {Id}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Product>> GetProductsByBrandAsync(int brandId)
         {
-            return await _productRepository.GetProductsByBrandAsync(brandId);
+            try
+            {
+                return await _productRepository.GetProductsByBrandAsync(brandId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting products for brand {BrandId}", brandId);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            return await _productRepository.GetProductsByCategoryAsync(categoryId);
+            try
+            {
+                return await _productRepository.GetProductsByCategoryAsync(categoryId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting products for category {CategoryId}", categoryId);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Product>> GetProductsBySkinTypeAsync(int skinTypeId)
         {
-            return await _productRepository.GetProductsBySkinTypeAsync(skinTypeId);
+            try
+            {
+                return await _productRepository.GetProductsBySkinTypeAsync(skinTypeId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting products for skin type {SkinTypeId}", skinTypeId);
+                throw;
+            }
         }
 
         public async Task<Product> AddProductAsync(Product product)
         {
             try
             {
+                if (product == null)
+                    throw new ArgumentNullException(nameof(product));
+
+                product.CreatedAt = DateTime.UtcNow;
+
+                // Set first image as main image if there are images
+                if (product.Images?.Any() == true)
+                {
+                    product.Images.First().IsMainImage = true;
+                }
+
                 await _productRepository.AddAsync(product);
-                return product;
+                
+                // Reload the product to get all navigation properties
+                var createdProduct = await _productRepository.GetByIdAsync(product.ProductId);
+                return createdProduct!;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding product");
+                _logger.LogError(ex, "Error adding product: {ProductName}", product?.ProductName);
                 throw;
             }
         }
@@ -58,11 +117,20 @@ namespace Service
         {
             try
             {
+                if (product == null)
+                    throw new ArgumentNullException(nameof(product));
+
+                var existingProduct = await _productRepository.GetByIdAsync(product.ProductId);
+                if (existingProduct == null)
+                {
+                    throw new KeyNotFoundException($"Product with ID {product.ProductId} not found");
+                }
+
                 await _productRepository.UpdateAsync(product);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating product");
+                _logger.LogError(ex, "Error updating product: {ProductId}", product?.ProductId);
                 throw;
             }
         }
@@ -71,11 +139,17 @@ namespace Service
         {
             try
             {
+                var product = await _productRepository.GetByIdAsync(id);
+                if (product == null)
+                {
+                    throw new KeyNotFoundException($"Product with ID {id} not found");
+                }
+
                 await _productRepository.DeleteAsync(id);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting product");
+                _logger.LogError(ex, "Error deleting product with ID {Id}", id);
                 throw;
             }
         }
@@ -84,31 +158,60 @@ namespace Service
         {
             try
             {
-                var product = await GetProductByIdAsync(productId);
-                if (product == null) return false;
+                var product = await _productRepository.GetByIdAsync(productId);
+                if (product == null)
+                {
+                    _logger.LogWarning("Product with ID {Id} not found for image update", productId);
+                    return false;
+                }
 
                 // Clear existing images
-                product.Images.Clear();
+                if (product.Images != null)
+                {
+                    product.Images.Clear();
+                }
+                else
+                {
+                    product.Images = new List<ProductImage>();
+                }
 
                 // Add new images
                 foreach (var url in imageUrls)
                 {
-                    product.Images.Add(new ProductImage { ImageUrl = url });
+                    product.Images.Add(new ProductImage
+                    {
+                        ProductId = productId,
+                        ImageUrl = url,
+                        IsMainImage = product.Images.Count == 0 // First image is main image
+                    });
                 }
 
-                await UpdateProductAsync(product);
+                await _productRepository.UpdateAsync(product);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating product images");
-                return false;
+                _logger.LogError(ex, "Error updating images for product {ProductId}", productId);
+                throw;
             }
         }
 
         public async Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
         {
-            return await _productRepository.SearchProductsAsync(searchTerm);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    return await GetAllProductsAsync();
+                }
+
+                return await _productRepository.SearchProductsAsync(searchTerm);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching products with term {SearchTerm}", searchTerm);
+                throw;
+            }
         }
     }
 }

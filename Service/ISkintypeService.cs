@@ -2,12 +2,12 @@ using Data.Models;
 
 namespace Service
 {
-    public interface ISkintypeService
+    public interface ISkinTypeService
     {
-        Task<IEnumerable<Skintype>> GetAllSkintypesAsync();
-        Task<Skintype?> GetSkintypeByIdAsync(int id);
-        Task AddSkintypeAsync(Skintype skintype);
-        Task UpdateSkintypeAsync(Skintype skintype);
-        Task DeleteSkintypeAsync(int id);
+        Task<IEnumerable<Skintype>> GetAllSkinTypesAsync();
+        Task<Skintype?> GetSkinTypeByIdAsync(int id);
+        Task AddSkinTypeAsync(Skintype skinType);
+        Task UpdateSkinTypeAsync(Skintype skinType);
+        Task DeleteSkinTypeAsync(int id);
     }
 }
