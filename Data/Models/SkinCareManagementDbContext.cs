@@ -68,6 +68,8 @@ public partial class SkinCareManagementDbContext : DbContext
     {
         modelBuilder.Entity<Brand>(entity =>
         {
+            entity.ToTable("Brands");
+            
             entity.HasKey(e => e.BrandId).HasName("PK__Brands__DAD4F3BE7F60ED59");
             entity.Property(e => e.BrandId).HasColumnName("BrandID");
             entity.Property(e => e.BrandName).HasMaxLength(100).IsRequired();
@@ -82,6 +84,8 @@ public partial class SkinCareManagementDbContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
+            entity.ToTable("Categories");
+            
             entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A0B7F60ED59");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(100).IsRequired();
@@ -96,6 +100,8 @@ public partial class SkinCareManagementDbContext : DbContext
 
         modelBuilder.Entity<Volume>(entity =>
         {
+            entity.ToTable("Volumes");
+            
             entity.HasKey(e => e.VolumeId).HasName("PK__Volumes__4CBC35B77F60ED59");
             entity.Property(e => e.VolumeId).HasColumnName("VolumeID");
             entity.Property(e => e.VolumeSize).HasMaxLength(50).IsRequired();
@@ -320,12 +326,22 @@ public partial class SkinCareManagementDbContext : DbContext
 
         modelBuilder.Entity<Skintype>(entity =>
         {
+            entity.ToTable("Skintypes");
+            
             entity.HasKey(e => e.SkinTypeId).HasName("PK__Skintype__D5D2962BEEC6528A");
-
-            entity.HasIndex(e => e.SkinTypeName, "UQ__Skintype__3F55C929689F2351").IsUnique();
-
             entity.Property(e => e.SkinTypeId).HasColumnName("SkinTypeID");
             entity.Property(e => e.SkinTypeName).HasMaxLength(50);
+
+            // Configure relationships
+            entity.HasMany(d => d.Products)
+                .WithOne(p => p.SkinType)
+                .HasForeignKey(p => p.SkinTypeId)
+                .HasConstraintName("FK__Products__SkinTypeID__123456");
+
+            entity.HasMany(d => d.SkinRoutines)
+                .WithOne(p => p.SkinType)
+                .HasForeignKey(p => p.SkinTypeId)
+                .HasConstraintName("FK__SkinRoutines__SkinTypeID__234567");
         });
 
         modelBuilder.Entity<User>(entity =>

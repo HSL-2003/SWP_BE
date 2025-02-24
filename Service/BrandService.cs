@@ -1,4 +1,5 @@
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Repo;
 
@@ -8,23 +9,49 @@ namespace Service
     {
         private readonly IBrandRepository _brandRepository;
         private readonly ILogger<BrandService> _logger;
+        private readonly SkinCareManagementDbContext _context;
 
-        public BrandService(IBrandRepository brandRepository, ILogger<BrandService> logger)
+        public BrandService(
+            IBrandRepository brandRepository, 
+            ILogger<BrandService> logger,
+            SkinCareManagementDbContext context)
         {
             _brandRepository = brandRepository;
             _logger = logger;
+            _context = context;
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            try
+            {
+                return await _context.Brands.AnyAsync(b => b.BrandId == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if brand exists with ID {Id}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
         {
             try
             {
-                return await _brandRepository.GetAllAsync();
+                // Verify database connection
+                if (!await _context.Database.CanConnectAsync())
+                {
+                    throw new Exception("Cannot connect to database");
+                }
+
+                var brands = await _brandRepository.GetAllAsync();
+                _logger.LogInformation("Retrieved {Count} brands from database", brands.Count());
+                return brands;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting all brands");
-                throw;
+                _logger.LogError(ex, "Error getting all brands: {Message}", ex.Message);
+                throw new Exception($"Failed to retrieve brands: {ex.Message}", ex);
             }
         }
 

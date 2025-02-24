@@ -10,5 +10,6 @@ namespace Service
         Task UpdateBrandAsync(Brand brand);
         Task DeleteBrandAsync(int id);
         Task<IEnumerable<Brand>> SearchByBrandNameAsync(string brandName);
+        Task<bool> ExistsAsync(int id);
     }
 } 

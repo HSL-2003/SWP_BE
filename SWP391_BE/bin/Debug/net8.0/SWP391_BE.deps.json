@@ -11,10 +11,7 @@
           "AutoMapper": "13.0.1",
           "BCrypt.Net-Next": "4.0.3",
           "Data": "1.0.0",
-          "Facebook": "7.0.6",
-          "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
-          "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.12",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.12",
           "Microsoft.EntityFrameworkCore.Design": "8.0.12",
@@ -1201,10 +1198,7 @@
       "Data/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
-          "Facebook": "7.0.6",
-          "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
-          "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.12",
           "Microsoft.EntityFrameworkCore": "8.0.12",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.12",

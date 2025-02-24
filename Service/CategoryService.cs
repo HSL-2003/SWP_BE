@@ -1,4 +1,5 @@
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Repo;
 
@@ -8,11 +9,29 @@ namespace Service
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly ILogger<CategoryService> _logger;
+        private readonly SkinCareManagementDbContext _context;
 
-        public CategoryService(ICategoryRepository categoryRepository, ILogger<CategoryService> logger)
+        public CategoryService(
+            ICategoryRepository categoryRepository, 
+            ILogger<CategoryService> logger,
+            SkinCareManagementDbContext context)
         {
             _categoryRepository = categoryRepository;
             _logger = logger;
+            _context = context;
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            try
+            {
+                return await _context.Categories.AnyAsync(c => c.CategoryId == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if category exists with ID {Id}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()

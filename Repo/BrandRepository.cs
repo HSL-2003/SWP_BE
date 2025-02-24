@@ -14,9 +14,18 @@ namespace Repo
 
         public async Task<IEnumerable<Brand>> GetAllAsync()
         {
-            return await _context.Brands
-                .Include(b => b.Products)
-                .ToListAsync();
+            try
+            {
+                return await _context.Brands
+                    // Only include Products if you really need them
+                    // .Include(b => b.Products)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve brands from database: {ex.Message}", ex);
+            }
         }
 
         public async Task<Brand?> GetByIdAsync(int id)

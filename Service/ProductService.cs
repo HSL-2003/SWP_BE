@@ -1,6 +1,7 @@
 using Data.Models;
 using Repo;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -8,23 +9,53 @@ namespace Service
     {
         private readonly IProductRepository _productRepository;
         private readonly ILogger<ProductService> _logger;
+        private readonly SkinCareManagementDbContext _context;
 
-        public ProductService(IProductRepository productRepository, ILogger<ProductService> logger)
+        public ProductService(
+            IProductRepository productRepository, 
+            ILogger<ProductService> logger,
+            SkinCareManagementDbContext context)
         {
             _productRepository = productRepository;
             _logger = logger;
+            _context = context;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             try
             {
-                return await _productRepository.GetAllAsync();
+                _logger.LogInformation("Starting to retrieve products");
+
+                IQueryable<Product> query = _context.Products;
+                _logger.LogInformation("Got Products DbSet");
+
+                query = query.Include(p => p.SkinType);
+                query = query.Include(p => p.Brand);
+                query = query.Include(p => p.Volume);
+                query = query.Include(p => p.Category);
+                // Tạm thời comment dòng này
+                // query = query.Include(p => p.Images);
+        
+                query = query.AsNoTracking();
+
+                var products = await query.ToListAsync();
+                _logger.LogInformation($"Retrieved {products.Count} products successfully");
+
+                return products;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting all products");
-                throw;
+                _logger.LogError(ex, "Error getting all products. Exception details: {Message}, Stack trace: {StackTrace}", 
+                    ex.Message, ex.StackTrace);
+                
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError("Inner exception: {Message}, Stack trace: {StackTrace}", 
+                        ex.InnerException.Message, ex.InnerException.StackTrace);
+                }
+                
+                throw new Exception($"Error retrieving products: {ex.Message}", ex);
             }
         }
 
@@ -32,16 +63,27 @@ namespace Service
         {
             try
             {
-                var product = await _productRepository.GetByIdAsync(id);
+                _logger.LogInformation("Getting product with ID: {Id}", id);
+                
+                var product = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Volume)
+                    .Include(p => p.SkinType)
+                    .Include(p => p.Category)
+                    .FirstOrDefaultAsync(p => p.ProductId == id);
+
                 if (product == null)
                 {
                     _logger.LogWarning("Product with ID {Id} not found", id);
+                    return null;
                 }
+
+                _logger.LogInformation("Successfully retrieved product with ID: {Id}", id);
                 return product;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting product with ID {Id}", id);
+                _logger.LogError(ex, "Error getting product by ID {Id}: {Message}", id, ex.Message);
                 throw;
             }
         }
@@ -50,11 +92,23 @@ namespace Service
         {
             try
             {
-                return await _productRepository.GetProductsByBrandAsync(brandId);
+                _logger.LogInformation("Getting products for brand ID: {BrandId}", brandId);
+                
+                var products = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Volume)
+                    .Include(p => p.SkinType)
+                    .Include(p => p.Category)
+                    .Where(p => p.BrandId == brandId)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+                _logger.LogInformation("Found {Count} products for brand ID {BrandId}", products.Count, brandId);
+                return products;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting products for brand {BrandId}", brandId);
+                _logger.LogError(ex, "Error getting products by brand {BrandId}: {Message}", brandId, ex.Message);
                 throw;
             }
         }
@@ -63,11 +117,18 @@ namespace Service
         {
             try
             {
-                return await _productRepository.GetProductsByCategoryAsync(categoryId);
+                return await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Volume)
+                    .Include(p => p.SkinType)
+                    .Include(p => p.Category)
+                    .Where(p => p.CategoryId == categoryId)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting products for category {CategoryId}", categoryId);
+                _logger.LogError(ex, "Error getting products by category {CategoryId}: {Message}", categoryId, ex.Message);
                 throw;
             }
         }
@@ -76,11 +137,18 @@ namespace Service
         {
             try
             {
-                return await _productRepository.GetProductsBySkinTypeAsync(skinTypeId);
+                return await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Volume)
+                    .Include(p => p.SkinType)
+                    .Include(p => p.Category)
+                    .Where(p => p.SkinTypeId == skinTypeId)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting products for skin type {SkinTypeId}", skinTypeId);
+                _logger.LogError(ex, "Error getting products by skin type {SkinTypeId}: {Message}", skinTypeId, ex.Message);
                 throw;
             }
         }
@@ -89,26 +157,42 @@ namespace Service
         {
             try
             {
-                if (product == null)
-                    throw new ArgumentNullException(nameof(product));
-
                 product.CreatedAt = DateTime.UtcNow;
-
-                // Set first image as main image if there are images
-                if (product.Images?.Any() == true)
+                
+                var brand = await _context.Brands.FindAsync(product.BrandId);
+                if (brand == null) 
                 {
-                    product.Images.First().IsMainImage = true;
+                    _logger.LogError($"Brand with ID {product.BrandId} not found");
+                    throw new Exception($"Brand với ID {product.BrandId} không tồn tại");
+                }
+                
+                var volume = await _context.Volumes.FindAsync(product.VolumeId);
+                if (volume == null)
+                {
+                    _logger.LogError($"Volume with ID {product.VolumeId} not found");
+                    throw new Exception($"Volume với ID {product.VolumeId} không tồn tại");
+                }
+                
+                var skinType = await _context.Skintypes.FindAsync(product.SkinTypeId);
+                if (skinType == null)
+                {
+                    _logger.LogError($"SkinType with ID {product.SkinTypeId} not found");
+                    throw new Exception($"SkinType với ID {product.SkinTypeId} không tồn tại");
+                }
+                
+                var category = await _context.Categories.FindAsync(product.CategoryId);
+                if (category == null)
+                {
+                    _logger.LogError($"Category with ID {product.CategoryId} not found");
+                    throw new Exception($"Category với ID {product.CategoryId} không tồn tại");
                 }
 
                 await _productRepository.AddAsync(product);
-                
-                // Reload the product to get all navigation properties
-                var createdProduct = await _productRepository.GetByIdAsync(product.ProductId);
-                return createdProduct!;
+                return product;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding product: {ProductName}", product?.ProductName);
+                _logger.LogError(ex, "Error adding product");
                 throw;
             }
         }
@@ -117,81 +201,43 @@ namespace Service
         {
             try
             {
-                if (product == null)
-                    throw new ArgumentNullException(nameof(product));
-
-                var existingProduct = await _productRepository.GetByIdAsync(product.ProductId);
-                if (existingProduct == null)
-                {
-                    throw new KeyNotFoundException($"Product with ID {product.ProductId} not found");
-                }
-
                 await _productRepository.UpdateAsync(product);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating product: {ProductId}", product?.ProductId);
+                _logger.LogError(ex, "Error updating product");
                 throw;
             }
         }
 
         public async Task DeleteProductAsync(int id)
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                var product = await _productRepository.GetByIdAsync(id);
-                if (product == null)
+                // Xóa theo đúng tên bảng và cột
+                var deleteProductImages = "DELETE FROM ProductImages WHERE ProductId = @id";
+                var deleteOrderDetails = "DELETE FROM OrderDetails WHERE ProductID = @id";  // Chú ý chữ ID viết hoa
+                var deleteFeedbacks = "DELETE FROM Feedbacks WHERE ProductID = @id";  // Chú ý tên bảng số nhiều và ID viết hoa
+                var deleteProduct = "DELETE FROM Products WHERE ProductID = @id";  // Chú ý ID viết hoa
+
+                // Thực hiện xóa theo thứ tự từ con đến cha
+                await _context.Database.ExecuteSqlRawAsync(deleteProductImages, new Microsoft.Data.SqlClient.SqlParameter("@id", id));
+                await _context.Database.ExecuteSqlRawAsync(deleteOrderDetails, new Microsoft.Data.SqlClient.SqlParameter("@id", id));
+                await _context.Database.ExecuteSqlRawAsync(deleteFeedbacks, new Microsoft.Data.SqlClient.SqlParameter("@id", id));
+                var result = await _context.Database.ExecuteSqlRawAsync(deleteProduct, new Microsoft.Data.SqlClient.SqlParameter("@id", id));
+
+                if (result == 0)
                 {
-                    throw new KeyNotFoundException($"Product with ID {id} not found");
+                    throw new Exception($"Product with ID {id} not found");
                 }
 
-                await _productRepository.DeleteAsync(id);
+                await transaction.CommitAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting product with ID {Id}", id);
-                throw;
-            }
-        }
-
-        public async Task<bool> UpdateProductImagesAsync(int productId, List<string> imageUrls)
-        {
-            try
-            {
-                var product = await _productRepository.GetByIdAsync(productId);
-                if (product == null)
-                {
-                    _logger.LogWarning("Product with ID {Id} not found for image update", productId);
-                    return false;
-                }
-
-                // Clear existing images
-                if (product.Images != null)
-                {
-                    product.Images.Clear();
-                }
-                else
-                {
-                    product.Images = new List<ProductImage>();
-                }
-
-                // Add new images
-                foreach (var url in imageUrls)
-                {
-                    product.Images.Add(new ProductImage
-                    {
-                        ProductId = productId,
-                        ImageUrl = url,
-                        IsMainImage = product.Images.Count == 0 // First image is main image
-                    });
-                }
-
-                await _productRepository.UpdateAsync(product);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating images for product {ProductId}", productId);
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error deleting product {Id}: {Message}", id, ex.Message);
                 throw;
             }
         }
@@ -200,16 +246,20 @@ namespace Service
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(searchTerm))
-                {
-                    return await GetAllProductsAsync();
-                }
-
-                return await _productRepository.SearchProductsAsync(searchTerm);
+                return await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Volume)
+                    .Include(p => p.SkinType)
+                    .Include(p => p.Category)
+                    .Where(p => p.ProductName.Contains(searchTerm) 
+                        || p.Description.Contains(searchTerm)
+                        || p.MainIngredients.Contains(searchTerm))
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error searching products with term {SearchTerm}", searchTerm);
+                _logger.LogError(ex, "Error searching products with term {SearchTerm}: {Message}", searchTerm, ex.Message);
                 throw;
             }
         }

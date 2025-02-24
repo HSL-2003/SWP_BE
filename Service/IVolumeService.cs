@@ -10,5 +10,6 @@ namespace Service
         Task UpdateVolumeAsync(Volume volume);
         Task DeleteVolumeAsync(int id);
         Task<IEnumerable<Volume>> SearchByValueAsync(string value);
+        Task<bool> ExistsAsync(int id);
     }
 } 

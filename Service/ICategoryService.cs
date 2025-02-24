@@ -10,5 +10,6 @@ namespace Service
         Task UpdateCategoryAsync(Category category);
         Task DeleteCategoryAsync(int id);
         Task<IEnumerable<Category>> SearchByCategoryNameAsync(string categoryName);
+        Task<bool> ExistsAsync(int id);
     }
 } 

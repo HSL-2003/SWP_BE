@@ -37,6 +37,7 @@ namespace SWP391_BE.Controllers
                 return BadRequest(response);
             return Ok(response);
         }
+
         [AllowAnonymous]
         [HttpPost("google-login")]
         public async Task<ActionResult<ServiceResponse<string>>> GoogleLogin([FromBody] string token)
@@ -73,5 +74,10 @@ namespace SWP391_BE.Controllers
                 return BadRequest(response);
             return Ok(response);
         }
+    }
+
+    public class GoogleLoginDTO
+    {
+        public string Token { get; set; }
     }
 }

@@ -3799,35 +3799,21 @@
         "additionalProperties": false
       },
       "CreateProductDTO": {
-        "required": [
-          "brandId",
-          "categoryId",
-          "price",
-          "productName",
-          "skinTypeId",
-          "volumeId"
-        ],
         "type": "object",
         "properties": {
           "productName": {
-            "maxLength": 200,
-            "minLength": 0,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "description": {
-            "maxLength": 2000,
-            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "price": {
-            "minimum": 0,
             "type": "number",
             "format": "double"
           },
           "stock": {
-            "maximum": 2147483647,
-            "minimum": 0,
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -3838,26 +3824,26 @@
           },
           "brandId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "volumeId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "skinTypeId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "categoryId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
-          "imageUrls": {
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+          "imageUrl": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -3981,11 +3967,11 @@
       },
       "CreateVolumeDTO": {
         "required": [
-          "value"
+          "volumeSize"
         ],
         "type": "object",
         "properties": {
-          "value": {
+          "volumeSize": {
             "maxLength": 50,
             "minLength": 0,
             "pattern": "^\\d+\\s*(ml|g|oz|kg)$",
@@ -4193,17 +4179,9 @@
             "format": "int32",
             "nullable": true
           },
-          "brandName": {
-            "type": "string",
-            "nullable": true
-          },
           "volumeId": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
-          },
-          "volumeValue": {
-            "type": "string",
             "nullable": true
           },
           "skinTypeId": {
@@ -4211,22 +4189,30 @@
             "format": "int32",
             "nullable": true
           },
-          "skinTypeName": {
-            "type": "string",
-            "nullable": true
-          },
           "categoryId": {
             "type": "integer",
             "format": "int32",
             "nullable": true
           },
-          "categoryName": {
-            "type": "string",
-            "nullable": true
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "brandName": {
+            "type": "string",
+            "nullable": true
+          },
+          "volumeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "skinTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryName": {
+            "type": "string",
             "nullable": true
           },
           "imageUrls": {
@@ -4487,35 +4473,21 @@
         "additionalProperties": false
       },
       "UpdateProductDTO": {
-        "required": [
-          "brandId",
-          "categoryId",
-          "price",
-          "productName",
-          "skinTypeId",
-          "volumeId"
-        ],
         "type": "object",
         "properties": {
           "productName": {
-            "maxLength": 200,
-            "minLength": 0,
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "description": {
-            "maxLength": 2000,
-            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "price": {
-            "minimum": 0,
             "type": "number",
             "format": "double"
           },
           "stock": {
-            "maximum": 2147483647,
-            "minimum": 0,
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -4526,26 +4498,26 @@
           },
           "brandId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "volumeId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "skinTypeId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "categoryId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
-          "imageUrls": {
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+          "imageUrl": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -4654,11 +4626,11 @@
       },
       "UpdateVolumeDTO": {
         "required": [
-          "value"
+          "volumeSize"
         ],
         "type": "object",
         "properties": {
-          "value": {
+          "volumeSize": {
             "maxLength": 50,
             "minLength": 0,
             "pattern": "^\\d+\\s*(ml|g|oz|kg)$",
@@ -4719,7 +4691,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "value": {
+          "volumeSize": {
             "type": "string",
             "nullable": true
           }

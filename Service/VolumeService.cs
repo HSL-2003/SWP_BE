@@ -1,4 +1,5 @@
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Repo;
 
@@ -8,11 +9,29 @@ namespace Service
     {
         private readonly IVolumeRepository _volumeRepository;
         private readonly ILogger<VolumeService> _logger;
+        private readonly SkinCareManagementDbContext _context;
 
-        public VolumeService(IVolumeRepository volumeRepository, ILogger<VolumeService> logger)
+        public VolumeService(
+            IVolumeRepository volumeRepository, 
+            ILogger<VolumeService> logger,
+            SkinCareManagementDbContext context)
         {
             _volumeRepository = volumeRepository;
             _logger = logger;
+            _context = context;
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            try
+            {
+                return await _context.Volumes.AnyAsync(v => v.VolumeId == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if volume exists with ID {Id}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Volume>> GetAllVolumesAsync()

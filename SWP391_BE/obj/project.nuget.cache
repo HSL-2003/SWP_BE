@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Dlcnx5SLZTs=",
+  "dgSpecHash": "AD6/O0SdExI=",
   "success": true,
-  "projectFilePath": "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
+  "projectFilePath": "D:\\SWP391\\BE\\SWP391_BE\\SWP391_BE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lequa\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\lequa\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

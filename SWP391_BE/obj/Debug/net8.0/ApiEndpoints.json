@@ -1018,7 +1018,7 @@
   },
   {
     "ContainingType": "SWP391_BE.Controllers.ProductController",
-    "Method": "GetAllProducts",
+    "Method": "GetProducts",
     "RelativePath": "api/Product",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1045,8 +1045,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "createProductDTO",
-        "Type": "SWP391_BE.DTOs.CreateProductDTO",
+        "Name": "createProductDto",
+        "Type": "CreateProductDTO",
         "IsRequired": true
       }
     ],
@@ -1103,7 +1103,7 @@
       },
       {
         "Name": "updateProductDTO",
-        "Type": "SWP391_BE.DTOs.UpdateProductDTO",
+        "Type": "UpdateProductDTO",
         "IsRequired": true
       }
     ],

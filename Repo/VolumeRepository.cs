@@ -14,7 +14,16 @@ namespace Repo
 
         public async Task<IEnumerable<Volume>> GetAllAsync()
         {
-            return await _context.Volumes.ToListAsync();
+            try
+            {
+                return await _context.Volumes
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve volumes from database: {ex.Message}", ex);
+            }
         }
 
         public async Task<Volume?> GetByIdAsync(int id)

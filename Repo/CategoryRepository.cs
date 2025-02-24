@@ -14,16 +14,32 @@ namespace Repo
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await _context.Categories
-                .Include(c => c.Products)
-                .ToListAsync();
+            try
+            {
+                return await _context.Categories
+                    // Only include Products if you really need them
+                    // .Include(c => c.Products)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve categories from database: {ex.Message}", ex);
+            }
         }
 
         public async Task<Category?> GetByIdAsync(int id)
         {
-            return await _context.Categories
-                .Include(c => c.Products)
-                .FirstOrDefaultAsync(c => c.CategoryId == id);
+            try
+            {
+                return await _context.Categories
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.CategoryId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve category with ID {id}: {ex.Message}", ex);
+            }
         }
 
         public async Task AddAsync(Category category)
@@ -50,9 +66,17 @@ namespace Repo
 
         public async Task<IEnumerable<Category>> SearchByCategoryNameAsync(string categoryName)
         {
-            return await _context.Categories
-                .Where(c => c.CategoryName.Contains(categoryName))
-                .ToListAsync();
+            try
+            {
+                return await _context.Categories
+                    .AsNoTracking()
+                    .Where(c => c.CategoryName.Contains(categoryName))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to search categories by name: {ex.Message}", ex);
+            }
         }
     }
 } 

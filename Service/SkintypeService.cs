@@ -1,6 +1,7 @@
 using Data.Models;
 using Repo;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
@@ -8,11 +9,29 @@ namespace Service
     {
         private readonly ISkinTypeRepository _skinTypeRepository;
         private readonly ILogger<SkinTypeService> _logger;
+        private readonly SkinCareManagementDbContext _context;
 
-        public SkinTypeService(ISkinTypeRepository skinTypeRepository, ILogger<SkinTypeService> logger)
+        public SkinTypeService(
+            ISkinTypeRepository skinTypeRepository, 
+            ILogger<SkinTypeService> logger,
+            SkinCareManagementDbContext context)
         {
             _skinTypeRepository = skinTypeRepository;
             _logger = logger;
+            _context = context;
+        }
+
+        public async Task<bool> ExistsAsync(int id)
+        {
+            try
+            {
+                return await _context.Skintypes.AnyAsync(s => s.SkinTypeId == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if skin type exists with ID {Id}", id);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Skintype>> GetAllSkinTypesAsync()

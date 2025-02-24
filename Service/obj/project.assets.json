@@ -1410,10 +1410,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
-          "Facebook": "7.0.6",
-          "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
-          "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.12",
           "Microsoft.EntityFrameworkCore": "8.0.12",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.12",
@@ -3823,19 +3820,22 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lequa\\.nuget\\packages\\": {}
+    "C:\\Users\\lequa\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SWP_BE\\Service\\Service.csproj",
+      "projectUniqueName": "D:\\SWP391\\BE\\Service\\Service.csproj",
       "projectName": "Service",
-      "projectPath": "D:\\SWP_BE\\Service\\Service.csproj",
+      "projectPath": "D:\\SWP391\\BE\\Service\\Service.csproj",
       "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-      "outputPath": "D:\\SWP_BE\\Service\\obj\\",
+      "outputPath": "D:\\SWP391\\BE\\Service\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "D:\\SWP_BE\\NuGet.Config",
         "C:\\Users\\lequa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -3844,17 +3844,18 @@
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\SWP_BE\\Data\\Data.csproj": {
-              "projectPath": "D:\\SWP_BE\\Data\\Data.csproj"
+            "D:\\SWP391\\BE\\Data\\Data.csproj": {
+              "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj"
             },
-            "D:\\SWP_BE\\Repo\\Repo.csproj": {
-              "projectPath": "D:\\SWP_BE\\Repo\\Repo.csproj"
+            "D:\\SWP391\\BE\\Repo\\Repo.csproj": {
+              "projectPath": "D:\\SWP391\\BE\\Repo\\Repo.csproj"
             }
           }
         }

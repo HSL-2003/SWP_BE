@@ -9,5 +9,6 @@ namespace Service
         Task AddSkinTypeAsync(Skintype skinType);
         Task UpdateSkinTypeAsync(Skintype skinType);
         Task DeleteSkinTypeAsync(int id);
+        Task<bool> ExistsAsync(int id);
     }
 }

@@ -30,17 +30,24 @@ namespace SWP391_BE.Controllers
         {
             try
             {
+                _logger.LogInformation("Starting to retrieve all brands");
+                
                 var brands = await _brandService.GetAllBrandsAsync();
                 if (!brands.Any())
                 {
+                    _logger.LogInformation("No brands found");
                     return NoContent();
                 }
-                return Ok(_mapper.Map<IEnumerable<BrandDTO>>(brands));
+                
+                var brandDtos = _mapper.Map<IEnumerable<BrandDTO>>(brands);
+                _logger.LogInformation("Successfully retrieved {Count} brands", brandDtos.Count());
+                
+                return Ok(brandDtos);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving all brands");
-                return StatusCode(500, "An error occurred while retrieving brands");
+                _logger.LogError(ex, "Error retrieving all brands: {Message}", ex.Message);
+                return StatusCode(500, $"An error occurred while retrieving brands: {ex.Message}");
             }
         }
 
