@@ -41,6 +41,30 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddAutoMapper(typeof(ProductMappingProfile));
 
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddAutoMapper(typeof(BrandMappingProfile));
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddAutoMapper(typeof(CategoryMappingProfile));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddAutoMapper(typeof(UserMappingProfile));
+
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddAutoMapper(typeof(RoleMappingProfile));
+
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddAutoMapper(typeof(FeedbackMappingProfile));
+
+builder.Services.AddScoped<IVolumeRepository, VolumeRepository>();
+builder.Services.AddScoped<IVolumeService, VolumeService>();
+builder.Services.AddAutoMapper(typeof(VolumeMappingProfile));
+
 builder.Services.AddScoped<ISkinTypeRepository, SkinTypeRepository>();
 builder.Services.AddScoped<ISkinTypeService, SkinTypeService>();
 builder.Services.AddAutoMapper(typeof(SkinTypeMappingProfile));
