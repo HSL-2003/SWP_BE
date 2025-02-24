@@ -1,4 +1,6 @@
-using Data.Models;
+﻿using Data.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +9,7 @@ using Repo;
 using Service;
 using SWP391_BE.Mappings;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -111,11 +114,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             RoleClaimType = "role"
         };
     });
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+builder.Services.AddAuthentication(options =>
 {
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-});
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddCookie() // Lưu trạng thái đăng nhập bằng Cookie
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        googleOptions.CallbackPath = "/api/auth/google-login";
+    })
+    .AddFacebook(facebookOptions =>
+    {
+        IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
+        facebookOptions.AppId = facebookAuthNSection["AppId"];
+        facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+        facebookOptions.CallbackPath = "/api/auth/login-facebook";
+    });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

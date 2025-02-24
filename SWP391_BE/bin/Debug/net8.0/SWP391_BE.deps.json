@@ -14,6 +14,7 @@
           "Facebook": "7.0.6",
           "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
+          "Microsoft.AspNetCore.Authentication.Facebook": "8.0.13",
           "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.12",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.12",
@@ -150,6 +151,14 @@
           "lib/net8.0/MailKit.dll": {
             "assemblyVersion": "4.10.0.0",
             "fileVersion": "4.10.0.0"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Facebook/8.0.13": {
+        "runtime": {
+          "lib/net8.0/Microsoft.AspNetCore.Authentication.Facebook.dll": {
+            "assemblyVersion": "8.0.13.0",
+            "fileVersion": "8.0.1325.6610"
           }
         }
       },
@@ -1204,6 +1213,7 @@
           "Facebook": "7.0.6",
           "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
+          "Microsoft.AspNetCore.Authentication.Facebook": "8.0.13",
           "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.12",
           "Microsoft.EntityFrameworkCore": "8.0.12",
@@ -1225,6 +1235,7 @@
           "Facebook": "7.0.6",
           "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
+          "Microsoft.AspNetCore.Authentication.Facebook": "8.0.13",
           "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "MimeKit": "4.10.0"
         },
@@ -1242,6 +1253,7 @@
           "Facebook": "7.0.6",
           "Google.Apis.Auth": "1.69.0",
           "MailKit": "4.10.0",
+          "Microsoft.AspNetCore.Authentication.Facebook": "8.0.13",
           "Microsoft.AspNetCore.Authentication.Google": "8.0.13",
           "MimeKit": "4.10.0",
           "Repo": "1.0.0"
@@ -1337,6 +1349,13 @@
       "sha512": "sha512-C6gwHQGHru2x/g1pzk0NXn5BIv0qoeKbSgb4BIFfWl4OjTZOEajSIR+O6i4WElsuJI8Z77LGr4rH5nVjypyvDQ==",
       "path": "mailkit/4.10.0",
       "hashPath": "mailkit.4.10.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.Facebook/8.0.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-veuLdXr6zmgx2xPUO8FwKhhgBWdZvzr6fMW6LLVCzW5kpdNmmlj55ZtUatl/l9bbsGsSEmExJr5h5SwlspyFLg==",
+      "path": "microsoft.aspnetcore.authentication.facebook/8.0.13",
+      "hashPath": "microsoft.aspnetcore.authentication.facebook.8.0.13.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.Google/8.0.13": {
       "type": "package",

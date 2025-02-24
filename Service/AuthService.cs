@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 using Google.Apis.Auth;
+using Azure;
 
 
 namespace Service
@@ -146,34 +147,91 @@ namespace Service
 
             try
             {
+                Console.WriteLine($"[VerifyEmail] Starting verification with token: {token}");
+
                 var user = await _context.Users
                     .FirstOrDefaultAsync(u => u.VerificationToken == token);
+
+                Console.WriteLine($"[VerifyEmail] User search result: {(user != null ? user.Email : "Not found")}");
+
                 if (user == null)
                 {
+                    // Kiểm tra xem user đã verify trước đó chưa
+                    var verifiedUser = await _context.Users
+                        .FirstOrDefaultAsync(u => u.IsVerification);
+
+                    if (verifiedUser != null)
+                    {
+                        Console.WriteLine($"[VerifyEmail] User already verified: {verifiedUser.Email}");
+                        response.Success = true;
+                        response.Message = "Email đã được xác thực trước đó";
+                        return response;
+                    }
+
+                    Console.WriteLine("[VerifyEmail] No user found with this token");
                     response.Success = false;
                     response.Message = "Token không hợp lệ";
                     return response;
                 }
 
-                if (DateTime.Parse(user.ExpirationToken!) < DateTime.UtcNow)
+                // Kiểm tra trạng thái verify
+                if (user.IsVerification)
                 {
+                    Console.WriteLine($"[VerifyEmail] User already verified: {user.Email}");
+                    response.Success = true;
+                    response.Message = "Email đã được xác thực trước đó";
+                    return response;
+                }
+
+                Console.WriteLine($"[VerifyEmail] Current verification status: {user.IsVerification}");
+                Console.WriteLine($"[VerifyEmail] Token expiration: {user.ExpirationToken}");
+
+                // Kiểm tra token hết hạn
+                if (!string.IsNullOrEmpty(user.ExpirationToken) &&
+                    DateTime.Parse(user.ExpirationToken) < DateTime.UtcNow)
+                {
+                    Console.WriteLine("[VerifyEmail] Token has expired");
                     response.Success = false;
                     response.Message = "Token đã hết hạn";
                     return response;
                 }
 
-                user.IsVerification = true;
-                user.VerificationToken = null;
-                user.ExpirationToken = null;
+                Console.WriteLine("[VerifyEmail] Token is valid, updating user status");
 
-                await _context.SaveChangesAsync();
+                try
+                {
+                    // Chỉ cập nhật trạng thái IsVerification, giữ nguyên token
+                    user.IsVerification = true;
+                    // Không set null cho VerificationToken và ExpirationToken
+                    // user.VerificationToken = null;
+                    // user.ExpirationToken = null;
 
-                await _emailService.SendWelcomeEmail(user.Email, user.Username);
+                    Console.WriteLine("[VerifyEmail] Attempting to save changes to database");
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine("[VerifyEmail] Changes saved successfully");
 
-                response.Message = "Xác thực email thành công";
+                    // Gửi email chào mừng
+                    await _emailService.SendWelcomeEmail(user.Email, user.Username);
+                    Console.WriteLine("[VerifyEmail] Welcome email sent");
+
+                    response.Success = true;
+                    response.Message = "Xác thực email thành công";
+                    Console.WriteLine("[VerifyEmail] Verification completed successfully");
+                }
+                catch (Exception saveEx)
+                {
+                    Console.WriteLine($"[VerifyEmail] Error saving changes: {saveEx.Message}");
+                    throw;
+                }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[VerifyEmail] Error occurred: {ex.Message}");
+                Console.WriteLine($"[VerifyEmail] Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"[VerifyEmail] Inner exception: {ex.InnerException.Message}");
+                }
                 response.Success = false;
                 response.Message = ex.InnerException?.Message ?? ex.Message;
             }
