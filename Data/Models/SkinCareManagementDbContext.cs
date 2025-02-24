@@ -40,13 +40,13 @@ public partial class SkinCareManagementDbContext : DbContext
 
     public virtual DbSet<Promotion> Promotions { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<Role> Role { get; set; }
 
     public virtual DbSet<SkinRoutine> SkinRoutines { get; set; }
 
     public virtual DbSet<Skintype> Skintypes { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<User> User { get; set; }
 
     public virtual DbSet<Volume> Volumes { get; set; }
 

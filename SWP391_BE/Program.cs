@@ -100,6 +100,20 @@ builder.Services.AddCors(options =>
                .SetIsOriginAllowed((host) => true);
     });
 });
+var tokenKey = builder.Configuration.GetSection("AppSettings:Token").Value;
+
+Console.WriteLine($"Token Length: {tokenKey?.Length}");
+Console.WriteLine($"Token Value: {tokenKey}");
+
+if (string.IsNullOrEmpty(tokenKey))
+{
+    throw new InvalidOperationException("JWT Token Key is missing from configuration.");
+}
+
+if (tokenKey.Length < 64)
+{
+    throw new InvalidOperationException($"JWT Token Key is too short. Length: {tokenKey.Length}");
+}
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -107,8 +121,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey)),
             ValidateIssuer = false,
             ValidateAudience = false,
             RoleClaimType = "role"
