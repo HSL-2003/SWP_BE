@@ -52,7 +52,7 @@ namespace Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding volume: {Value}", volume?.Value);
+                _logger.LogError(ex, "Error adding volume: {VolumeSize}", volume?.VolumeSize);
                 throw;
             }
         }
@@ -91,13 +91,13 @@ namespace Service
             try
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Volume value cannot be empty", nameof(value));
+                    throw new ArgumentException("Volume size cannot be empty", nameof(value));
 
                 return await _volumeRepository.SearchByValueAsync(value);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error searching volumes by value: {Value}", value);
+                _logger.LogError(ex, "Error searching volumes by value: {VolumeSize}", value);
                 throw;
             }
         }

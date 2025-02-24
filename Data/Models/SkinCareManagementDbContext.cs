@@ -98,7 +98,7 @@ public partial class SkinCareManagementDbContext : DbContext
         {
             entity.HasKey(e => e.VolumeId).HasName("PK__Volumes__4CBC35B77F60ED59");
             entity.Property(e => e.VolumeId).HasColumnName("VolumeID");
-            entity.Property(e => e.Value).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.VolumeSize).HasMaxLength(50).IsRequired();
 
             // Configure relationship with Products
             entity.HasMany(d => d.Products)

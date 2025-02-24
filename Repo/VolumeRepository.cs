@@ -47,7 +47,7 @@ namespace Repo
         public async Task<IEnumerable<Volume>> SearchByValueAsync(string value)
         {
             return await _context.Volumes
-                .Where(v => v.Value.Contains(value))
+                .Where(v => v.VolumeSize.Contains(value))
                 .ToListAsync();
         }
     }
