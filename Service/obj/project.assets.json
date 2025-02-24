@@ -3826,11 +3826,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SWP391\\BE\\Service\\Service.csproj",
+      "projectUniqueName": "D:\\SWP_BE\\Service\\Service.csproj",
       "projectName": "Service",
-      "projectPath": "D:\\SWP391\\BE\\Service\\Service.csproj",
+      "projectPath": "D:\\SWP_BE\\Service\\Service.csproj",
       "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-      "outputPath": "D:\\SWP391\\BE\\Service\\obj\\",
+      "outputPath": "D:\\SWP_BE\\Service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3851,11 +3851,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\SWP391\\BE\\Data\\Data.csproj": {
-              "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj"
+            "D:\\SWP_BE\\Data\\Data.csproj": {
+              "projectPath": "D:\\SWP_BE\\Data\\Data.csproj"
             },
-            "D:\\SWP391\\BE\\Repo\\Repo.csproj": {
-              "projectPath": "D:\\SWP391\\BE\\Repo\\Repo.csproj"
+            "D:\\SWP_BE\\Repo\\Repo.csproj": {
+              "projectPath": "D:\\SWP_BE\\Repo\\Repo.csproj"
             }
           }
         }

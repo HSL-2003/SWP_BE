@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SWP391\\BE\\SWP391_BE\\SWP391_BE.csproj": {}
+    "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj": {}
   },
   "projects": {
-    "D:\\SWP391\\BE\\Data\\Data.csproj": {
+    "D:\\SWP_BE\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SWP391\\BE\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\SWP_BE\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj",
+        "projectPath": "D:\\SWP_BE\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-        "outputPath": "D:\\SWP391\\BE\\Data\\obj\\",
+        "outputPath": "D:\\SWP_BE\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -111,14 +111,14 @@
         }
       }
     },
-    "D:\\SWP391\\BE\\Repo\\Repo.csproj": {
+    "D:\\SWP_BE\\Repo\\Repo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SWP391\\BE\\Repo\\Repo.csproj",
+        "projectUniqueName": "D:\\SWP_BE\\Repo\\Repo.csproj",
         "projectName": "Repo",
-        "projectPath": "D:\\SWP391\\BE\\Repo\\Repo.csproj",
+        "projectPath": "D:\\SWP_BE\\Repo\\Repo.csproj",
         "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-        "outputPath": "D:\\SWP391\\BE\\Repo\\obj\\",
+        "outputPath": "D:\\SWP_BE\\Repo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -139,8 +139,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\SWP391\\BE\\Data\\Data.csproj": {
-                "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj"
+              "D:\\SWP_BE\\Data\\Data.csproj": {
+                "projectPath": "D:\\SWP_BE\\Data\\Data.csproj"
               }
             }
           }
@@ -206,14 +206,14 @@
         }
       }
     },
-    "D:\\SWP391\\BE\\Service\\Service.csproj": {
+    "D:\\SWP_BE\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SWP391\\BE\\Service\\Service.csproj",
+        "projectUniqueName": "D:\\SWP_BE\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "D:\\SWP391\\BE\\Service\\Service.csproj",
+        "projectPath": "D:\\SWP_BE\\Service\\Service.csproj",
         "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-        "outputPath": "D:\\SWP391\\BE\\Service\\obj\\",
+        "outputPath": "D:\\SWP_BE\\Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -234,11 +234,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\SWP391\\BE\\Data\\Data.csproj": {
-                "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj"
+              "D:\\SWP_BE\\Data\\Data.csproj": {
+                "projectPath": "D:\\SWP_BE\\Data\\Data.csproj"
               },
-              "D:\\SWP391\\BE\\Repo\\Repo.csproj": {
-                "projectPath": "D:\\SWP391\\BE\\Repo\\Repo.csproj"
+              "D:\\SWP_BE\\Repo\\Repo.csproj": {
+                "projectPath": "D:\\SWP_BE\\Repo\\Repo.csproj"
               }
             }
           }
@@ -304,14 +304,14 @@
         }
       }
     },
-    "D:\\SWP391\\BE\\SWP391_BE\\SWP391_BE.csproj": {
+    "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SWP391\\BE\\SWP391_BE\\SWP391_BE.csproj",
+        "projectUniqueName": "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
         "projectName": "SWP391_BE",
-        "projectPath": "D:\\SWP391\\BE\\SWP391_BE\\SWP391_BE.csproj",
+        "projectPath": "D:\\SWP_BE\\SWP391_BE\\SWP391_BE.csproj",
         "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
-        "outputPath": "D:\\SWP391\\BE\\SWP391_BE\\obj\\",
+        "outputPath": "D:\\SWP_BE\\SWP391_BE\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -332,11 +332,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\SWP391\\BE\\Data\\Data.csproj": {
-                "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj"
+              "D:\\SWP_BE\\Data\\Data.csproj": {
+                "projectPath": "D:\\SWP_BE\\Data\\Data.csproj"
               },
-              "D:\\SWP391\\BE\\Service\\Service.csproj": {
-                "projectPath": "D:\\SWP391\\BE\\Service\\Service.csproj"
+              "D:\\SWP_BE\\Service\\Service.csproj": {
+                "projectPath": "D:\\SWP_BE\\Service\\Service.csproj"
               }
             }
           }
