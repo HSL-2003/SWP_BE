@@ -1,4 +1,6 @@
-using Data.Models;
+﻿using Data.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +9,7 @@ using Repo;
 using Service;
 using SWP391_BE.Mappings;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +100,20 @@ builder.Services.AddCors(options =>
                .SetIsOriginAllowed((host) => true);
     });
 });
+var tokenKey = builder.Configuration.GetSection("AppSettings:Token").Value;
+
+Console.WriteLine($"Token Length: {tokenKey?.Length}");
+Console.WriteLine($"Token Value: {tokenKey}");
+
+if (string.IsNullOrEmpty(tokenKey))
+{
+    throw new InvalidOperationException("JWT Token Key is missing from configuration.");
+}
+
+if (tokenKey.Length < 64)
+{
+    throw new InvalidOperationException($"JWT Token Key is too short. Length: {tokenKey.Length}");
+}
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -104,18 +121,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey)),
             ValidateIssuer = false,
             ValidateAudience = false,
             RoleClaimType = "role"
         };
     });
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+builder.Services.AddAuthentication(options =>
 {
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-});
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddCookie() // Lưu trạng thái đăng nhập bằng Cookie
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        googleOptions.CallbackPath = "/api/auth/google-login";
+    })
+    .AddFacebook(facebookOptions =>
+    {
+        IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
+        facebookOptions.AppId = facebookAuthNSection["AppId"];
+        facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+        facebookOptions.CallbackPath = "/api/auth/login-facebook";
+    });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
