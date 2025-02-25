@@ -12,7 +12,7 @@ namespace Service
         private readonly SkinCareManagementDbContext _context;
 
         public ProductService(
-            IProductRepository productRepository, 
+            IProductRepository productRepository,
             ILogger<ProductService> logger,
             SkinCareManagementDbContext context)
         {
@@ -36,7 +36,7 @@ namespace Service
                 query = query.Include(p => p.Category);
                 // Tạm thời comment dòng này
                 // query = query.Include(p => p.Images);
-        
+
                 query = query.AsNoTracking();
 
                 var products = await query.ToListAsync();
@@ -46,15 +46,15 @@ namespace Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting all products. Exception details: {Message}, Stack trace: {StackTrace}", 
+                _logger.LogError(ex, "Error getting all products. Exception details: {Message}, Stack trace: {StackTrace}",
                     ex.Message, ex.StackTrace);
-                
+
                 if (ex.InnerException != null)
                 {
-                    _logger.LogError("Inner exception: {Message}, Stack trace: {StackTrace}", 
+                    _logger.LogError("Inner exception: {Message}, Stack trace: {StackTrace}",
                         ex.InnerException.Message, ex.InnerException.StackTrace);
                 }
-                
+
                 throw new Exception($"Error retrieving products: {ex.Message}", ex);
             }
         }
@@ -64,7 +64,7 @@ namespace Service
             try
             {
                 _logger.LogInformation("Getting product with ID: {Id}", id);
-                
+
                 var product = await _context.Products
                     .Include(p => p.Brand)
                     .Include(p => p.Volume)
@@ -93,7 +93,7 @@ namespace Service
             try
             {
                 _logger.LogInformation("Getting products for brand ID: {BrandId}", brandId);
-                
+
                 var products = await _context.Products
                     .Include(p => p.Brand)
                     .Include(p => p.Volume)
@@ -172,14 +172,14 @@ namespace Service
                     _logger.LogError($"Volume with ID {product.VolumeId} not found");
                     throw new Exception($"Volume với ID {product.VolumeId} không tồn tại");
                 }
-                
+
                 var skinType = await _context.Skintypes.FindAsync(product.SkinTypeId);
                 if (skinType == null)
                 {
                     _logger.LogError($"SkinType with ID {product.SkinTypeId} not found");
                     throw new Exception($"SkinType với ID {product.SkinTypeId} không tồn tại");
                 }
-                
+
                 var category = await _context.Categories.FindAsync(product.CategoryId);
                 if (category == null)
                 {
@@ -251,7 +251,7 @@ namespace Service
                     .Include(p => p.Volume)
                     .Include(p => p.SkinType)
                     .Include(p => p.Category)
-                    .Where(p => p.ProductName.Contains(searchTerm) 
+                    .Where(p => p.ProductName.Contains(searchTerm)
                         || p.Description.Contains(searchTerm)
                         || p.MainIngredients.Contains(searchTerm))
                     .AsNoTracking()

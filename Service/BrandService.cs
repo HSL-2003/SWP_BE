@@ -12,7 +12,7 @@ namespace Service
         private readonly SkinCareManagementDbContext _context;
 
         public BrandService(
-            IBrandRepository brandRepository, 
+            IBrandRepository brandRepository,
             ILogger<BrandService> logger,
             SkinCareManagementDbContext context)
         {
@@ -129,4 +129,4 @@ namespace Service
             }
         }
     }
-} 
+}

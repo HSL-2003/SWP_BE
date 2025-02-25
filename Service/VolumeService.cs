@@ -12,7 +12,7 @@ namespace Service
         private readonly SkinCareManagementDbContext _context;
 
         public VolumeService(
-            IVolumeRepository volumeRepository, 
+            IVolumeRepository volumeRepository,
             ILogger<VolumeService> logger,
             SkinCareManagementDbContext context)
         {
@@ -121,4 +121,4 @@ namespace Service
             }
         }
     }
-} 
+}
