@@ -25,7 +25,7 @@ namespace Service
         {
             try
             {
-                return await _context.Brands.AnyAsync(b => b.BrandId == id);
+                return await _context.Brand.AnyAsync(b => b.BrandId == id);
             }
             catch (Exception ex)
             {
