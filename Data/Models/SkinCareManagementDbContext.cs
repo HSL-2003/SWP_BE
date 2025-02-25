@@ -18,7 +18,7 @@ public partial class SkinCareManagementDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Brand> Brands { get; set; }
+    public virtual DbSet<Brand> Brand { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
 
@@ -48,7 +48,7 @@ public partial class SkinCareManagementDbContext : DbContext
 
     public virtual DbSet<User> User { get; set; }
 
-    public virtual DbSet<Volume> Volumes { get; set; }
+    public virtual DbSet<Volume> Volume { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -68,7 +68,7 @@ public partial class SkinCareManagementDbContext : DbContext
     {
         modelBuilder.Entity<Brand>(entity =>
         {
-            entity.ToTable("Brands");
+            entity.ToTable("Brand");
             
             entity.HasKey(e => e.BrandId).HasName("PK__Brands__DAD4F3BE7F60ED59");
             entity.Property(e => e.BrandId).HasColumnName("BrandID");
@@ -100,9 +100,9 @@ public partial class SkinCareManagementDbContext : DbContext
 
         modelBuilder.Entity<Volume>(entity =>
         {
-            entity.ToTable("Volumes");
+            entity.ToTable("Volume");
             
-            entity.HasKey(e => e.VolumeId).HasName("PK__Volumes__4CBC35B77F60ED59");
+            entity.HasKey(e => e.VolumeId).HasName("PK__Volume__4CBC35B77F60ED59");
             entity.Property(e => e.VolumeId).HasColumnName("VolumeID");
             entity.Property(e => e.VolumeSize).HasMaxLength(50).IsRequired();
 

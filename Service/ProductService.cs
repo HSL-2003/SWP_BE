@@ -159,14 +159,14 @@ namespace Service
             {
                 product.CreatedAt = DateTime.UtcNow;
                 
-                var brand = await _context.Brands.FindAsync(product.BrandId);
+                var brand = await _context.Brand.FindAsync(product.BrandId);
                 if (brand == null) 
                 {
                     _logger.LogError($"Brand with ID {product.BrandId} not found");
                     throw new Exception($"Brand với ID {product.BrandId} không tồn tại");
                 }
                 
-                var volume = await _context.Volumes.FindAsync(product.VolumeId);
+                var volume = await _context.Volume.FindAsync(product.VolumeId);
                 if (volume == null)
                 {
                     _logger.LogError($"Volume with ID {product.VolumeId} not found");
