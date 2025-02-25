@@ -1,9 +1,9 @@
-# Thư mục biên dịch và build
+# 🛠 Thư mục biên dịch và build
 bin/
 obj/
 out/
 
-# File log, debug và cache
+# 🚀 File log, debug và cache
 *.log
 *.tlog
 *.cache
@@ -14,7 +14,7 @@ out/
 *.dotCover
 *.coverage
 
-# Thư viện và package của NuGet
+# 📦 Thư viện và package của NuGet
 packages/
 *.nupkg
 project.lock.json
@@ -22,47 +22,46 @@ project.assets.json
 project.nuget.cache
 .nuget/
 
-# Cấu hình của Visual Studio
+# 🔹 Cấu hình Visual Studio và các IDE khác
 .vs/
+.vs/*/
+.vs/CopilotIndices/
+.vs/ProjectEvaluation/
+.vs/FileContentIndex/
 *.sln.ide
 *.sln.docstates
 *.suo
 *.sln.cache
 
-# Cấu hình của Rider và JetBrains
+# 🔹 Rider, JetBrains
 .idea/
 *.iml
 
-# File của AI Copilot và IntelliCode
-.vs/CopilotIndices/
-.vs/ProjectEvaluation/
-.vs/FileContentIndex/
-
-# File hệ thống của Visual Studio Code
+# 🔹 Cấu hình của Visual Studio Code
 .vscode/
 
-# File dữ liệu tạm thời của hệ điều hành
+# 🔹 File dữ liệu tạm thời của hệ điều hành
 *.tmp
 *.bak
 *.swp
 *.DS_Store
 Thumbs.db
 
-# File publish và deploy
+# 🏗 File publish và deploy (giữ lại `appsettings.json` cần thiết)
 publish/
 wwwroot/
-appsettings.json
-appsettings.Development.json
+!appsettings.json
+!appsettings.Development.json
 appsettings.Local.json
 
-# File của Docker (nếu dùng)
+# 🐳 File Docker
 docker-compose.override.yml
 .env
 
-# Nếu bạn dùng Entity Framework, bỏ qua migrations tạm thời
+# 📌 Migration của Entity Framework (chỉ bỏ qua khi cần)
 Migrations/
 
-# Các file biên dịch từ TypeScript hoặc frontend (nếu có)
+# 📦 Node.js và frontend build (nếu có)
 node_modules/
 dist/
 yarn.lock
