@@ -1,16 +1,6 @@
 [
   {
     "ContainingType": "SWP391_BE.Controllers.AuthController",
-    "Method": "FacebookCallback",
-    "RelativePath": "api/Auth/facebook-callback",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "SWP391_BE.Controllers.AuthController",
     "Method": "ForgotPassword",
     "RelativePath": "api/Auth/forgot-password",
     "HttpMethod": "POST",
@@ -86,16 +76,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "SWP391_BE.Controllers.AuthController",
-    "Method": "LoginWithFacebook",
-    "RelativePath": "api/Auth/login-facebook",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "SWP391_BE.Controllers.AuthController",

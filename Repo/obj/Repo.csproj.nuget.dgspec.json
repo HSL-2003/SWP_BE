@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Repo\\Repo.csproj": {}
+    "D:\\SWP391\\BE\\Repo\\Repo.csproj": {}
   },
   "projects": {
-    "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Data\\Data.csproj": {
+    "D:\\SWP391\\BE\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\SWP391\\BE\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Data\\Data.csproj",
-        "packagesPath": "C:\\Users\\LAPTOP\\.nuget\\packages\\",
-        "outputPath": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Data\\obj\\",
+        "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj",
+        "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
+        "outputPath": "D:\\SWP391\\BE\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -107,18 +107,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Repo\\Repo.csproj": {
+    "D:\\SWP391\\BE\\Repo\\Repo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Repo\\Repo.csproj",
+        "projectUniqueName": "D:\\SWP391\\BE\\Repo\\Repo.csproj",
         "projectName": "Repo",
-        "projectPath": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Repo\\Repo.csproj",
-        "packagesPath": "C:\\Users\\LAPTOP\\.nuget\\packages\\",
-        "outputPath": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Repo\\obj\\",
+        "projectPath": "D:\\SWP391\\BE\\Repo\\Repo.csproj",
+        "packagesPath": "C:\\Users\\lequa\\.nuget\\packages\\",
+        "outputPath": "D:\\SWP391\\BE\\Repo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -139,8 +139,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Data\\Data.csproj": {
-                "projectPath": "C:\\Desktop\\IT\\FPT\\5\\SWP391\\NewBE\\SWP_BE\\Data\\Data.csproj"
+              "D:\\SWP391\\BE\\Data\\Data.csproj": {
+                "projectPath": "D:\\SWP391\\BE\\Data\\Data.csproj"
               }
             }
           }
@@ -155,7 +155,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -176,10 +176,6 @@
             "MailKit": {
               "target": "Package",
               "version": "[4.10.0, )"
-            },
-            "Microsoft.AspNetCore.Authentication.Facebook": {
-              "target": "Package",
-              "version": "[8.0.13, )"
             },
             "Microsoft.AspNetCore.Authentication.Google": {
               "target": "Package",
@@ -206,7 +202,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
