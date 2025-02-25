@@ -1,0 +1,69 @@
+# Thư mục biên dịch và build
+bin/
+obj/
+out/
+
+# File log, debug và cache
+*.log
+*.tlog
+*.cache
+*.pdb
+*.ilk
+*.suo
+*.user
+*.dotCover
+*.coverage
+
+# Thư viện và package của NuGet
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+project.nuget.cache
+.nuget/
+
+# Cấu hình của Visual Studio
+.vs/
+*.sln.ide
+*.sln.docstates
+*.suo
+*.sln.cache
+
+# Cấu hình của Rider và JetBrains
+.idea/
+*.iml
+
+# File của AI Copilot và IntelliCode
+.vs/CopilotIndices/
+.vs/ProjectEvaluation/
+.vs/FileContentIndex/
+
+# File hệ thống của Visual Studio Code
+.vscode/
+
+# File dữ liệu tạm thời của hệ điều hành
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
+
+# File publish và deploy
+publish/
+wwwroot/
+appsettings.json
+appsettings.Development.json
+appsettings.Local.json
+
+# File của Docker (nếu dùng)
+docker-compose.override.yml
+.env
+
+# Nếu bạn dùng Entity Framework, bỏ qua migrations tạm thời
+Migrations/
+
+# Các file biên dịch từ TypeScript hoặc frontend (nếu có)
+node_modules/
+dist/
+yarn.lock
+pnpm-lock.yaml
