@@ -1,4 +1,5 @@
-using Data.Models;
+﻿using Data.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -89,33 +90,47 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 // CORS configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .SetIsOriginAllowed((host) => true);
-    });
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .WithOrigins("http://localhost:5173") // Đổi thành địa chỉ frontend của bạn
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()); // Cho phép cookies, headers khi login
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            RoleClaimType = "role"
-        };
-    });
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+            .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        RoleClaimType = "role"
+    };
+})
+.AddGoogle(googleOptions =>
 {
     googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+})
+.AddFacebook(facebookOptions =>
+{
+    IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
+    facebookOptions.AppId = facebookAuthNSection["AppId"];
+    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+    facebookOptions.CallbackPath = "/dang-nhap-tu-facebook";
 });
+
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -133,6 +148,7 @@ if (app.Environment.IsDevelopment())
 
 // Remove UseHttpsRedirection if testing with HTTP
 // app.UseHttpsRedirection();
+
 
 app.UseAuthentication();
 app.UseAuthorization();

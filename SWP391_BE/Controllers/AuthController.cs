@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Service;
 using Microsoft.AspNetCore.Authorization;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace SWP391_BE.Controllers
 {
@@ -56,6 +60,36 @@ namespace SWP391_BE.Controllers
                 return BadRequest(response);
             return Ok(response);
         }
+        [HttpGet("login-facebook")]
+        public IActionResult LoginFacebook()
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action(nameof(FacebookCallback)) // Trang nhận kết quả từ Facebook
+            };
+            return Challenge(properties, "Facebook"); // Gửi yêu cầu đăng nhập qua Facebook
+        }
+
+        [HttpGet("facebook-callback")]
+        public async Task<IActionResult> FacebookCallback()
+        {
+            var authenticateResult = await HttpContext.AuthenticateAsync("Facebook");
+
+            if (!authenticateResult.Succeeded)
+            {
+                return BadRequest("Facebook authentication failed.");
+            }
+
+            var claims = authenticateResult.Principal.Identities.FirstOrDefault()?.Claims;
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+
+            return Ok(new { message = "Đăng nhập Facebook thành công!", claims });
+        }
+
+
 
         [HttpPost("forgot-password")]
         public async Task<ActionResult<ServiceResponse<string>>> ForgotPassword([FromBody] string email)
