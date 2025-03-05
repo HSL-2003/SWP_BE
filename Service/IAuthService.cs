@@ -8,15 +8,18 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-   
-        public interface IAuthService
-        {
-            Task<ServiceResponse<string>> Register(RegisterDTO model);
-            Task<ServiceResponse<string>> Login(LoginDTO model);
-            Task<ServiceResponse<string>> VerifyEmail(string token);
-            Task<ServiceResponse<string>> ForgotPassword(string email);
-            Task<ServiceResponse<string>> ResetPassword(ResetPasswordDTO model);
-            Task<ServiceResponse<string>> GoogleLogin(string token);
+
+    public interface IAuthService
+    {
+        Task<ServiceResponse<string>> Register(RegisterDTO model);
+        Task<ServiceResponse<string>> Login(LoginDTO model);
+        Task<ServiceResponse<string>> VerifyEmail(string token);
+        Task<ServiceResponse<string>> ForgotPassword(string email);
+        Task<ServiceResponse<string>> ResetPassword(ResetPasswordDTO model);
+        Task<ServiceResponse<string>> LoginWithGoogle(string idToken);
     }
+
+
+    
     }
 

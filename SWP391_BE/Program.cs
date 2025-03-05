@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 // Register SkinCareManagementDbContext
+builder.Services.AddHttpClient();
 builder.Services.AddDbContext<SkinCareManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SkinCareManagementDB")));
 
@@ -21,6 +24,13 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -92,7 +102,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
         builder => builder
-            .WithOrigins("http://localhost:5173") // Đổi thành địa chỉ frontend của bạn
+            .WithOrigins("http://localhost:5173", "https://localhost:7285") // Đổi thành địa chỉ frontend của bạn
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()); // Cho phép cookies, headers khi login
@@ -102,9 +112,17 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
-.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(options =>
+{
+    options.Cookie.Name = "SkinCareAuth"; // Đặt tên cụ thể để dễ debug
+    options.Cookie.SameSite = SameSiteMode.None; // Đảm bảo gửi qua redirect
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Chỉ HTTPS
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Đảm bảo cookie không bị chặn
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+})
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -121,6 +139,19 @@ builder.Services.AddAuthentication(options =>
 {
     googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    googleOptions.CallbackPath = "/api/Auth/google-callback";
+    googleOptions.SaveTokens = true;  
+
+    googleOptions.Events.OnRemoteFailure = context =>
+    {
+        Console.WriteLine($"Google OAuth Error: {context.Failure?.Message}");
+        Console.WriteLine($"QueryString: {context.Request.QueryString}");
+        Console.WriteLine($"Cookies: {context.Request.Cookies}");
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        context.Response.WriteAsync($"OAuth failure: {context.Failure?.Message}");
+        context.HandleResponse();
+        return Task.CompletedTask;
+    };
 })
 .AddFacebook(facebookOptions =>
 {
@@ -136,6 +167,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
+
 // Middleware order is important!
 app.UseRouting();
 app.UseCors("AllowAll");  // Must be after UseRouting
@@ -146,9 +178,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Remove UseHttpsRedirection if testing with HTTP
-// app.UseHttpsRedirection();
 
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

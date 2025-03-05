@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 using Google.Apis.Auth;
 using Azure;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Service
@@ -25,15 +26,21 @@ namespace Service
         private readonly SkinCareManagementDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
+        private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthService(
             SkinCareManagementDbContext context,
             IConfiguration configuration,
-            IEmailService emailService)
+            IEmailService emailService,
+            HttpClient httpClient,
+            IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _configuration = configuration;
             _emailService = emailService;
+            _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ServiceResponse<string>> Register(RegisterDTO model)
@@ -326,6 +333,54 @@ namespace Service
         {
             return await _context.Users.AnyAsync(u => u.Email == email);
         }
+        public async Task<ServiceResponse<string>> LoginWithGoogle(string idToken)
+        {
+            var response = new ServiceResponse<string>();
+
+            try
+            {
+                var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        Username = payload.Email.Split('@')[0],
+                        Email = payload.Email,
+                        FullName = payload.Name,
+                        PhoneNumber = "DefaultPhoneNumber",  // Nếu Google không trả về số điện thoại
+                        Address = "DefaultAddress",
+                        ExpirationToken = Guid.NewGuid().ToString(), // Token xác thực
+                        VerificationToken = Guid.NewGuid().ToString(),
+                        IsVerification = true,
+                        RoleId = 3, // Giả sử role mặc định là user
+                        CreatedAt = DateTime.UtcNow,
+                        Password = "GOOGLE_LOGIN", // Gán giá trị mặc định
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword("GOOGLE_LOGIN") // Hash mật khẩu mặc định
+                    };
+
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+                }
+
+                response.Data = GenerateJwtToken(user);
+                response.Message = "Đăng nhập Google thành công";
+            }
+            catch (DbUpdateException dbEx)
+            {
+                response.Success = false;
+                response.Message = "Lỗi khi lưu dữ liệu vào database: " + dbEx.InnerException?.Message;
+            }
+
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "Lỗi xác thực Google: " + ex.Message;
+            }
+
+            return response;
+        }
 
         private string GenerateJwtToken(User user)
         {
@@ -333,12 +388,12 @@ namespace Service
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.RoleName),
+                new Claim(ClaimTypes.Role, "User"),
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value!));
+                _configuration["AppSettings:Token"]));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -354,82 +409,11 @@ namespace Service
 
             return tokenHandler.WriteToken(token);
         }
-
-        public async Task<ServiceResponse<string>> GoogleLogin(string token)
-        {
-            var response = new ServiceResponse<string>();
-
-            try
-            {
-                // Verify Google token
-                var settings = new GoogleJsonWebSignature.ValidationSettings()
-                {
-                    Audience = new List<string> { _configuration["Authentication:Google:ClientId"] }
-                };
-                var payload = await GoogleJsonWebSignature.ValidateAsync(token, settings);
-
-                if (payload == null)
-                {
-                    response.Success = false;
-                    response.Message = "Token Google không hợp lệ";
-                    return response;
-                }
-
-                // Check if user exists
-                var user = await _context.Users
-                    .Include(u => u.Role)  // Include the Role
-                    .FirstOrDefaultAsync(u => u.Email == payload.Email);
-
-                if (user == null)
-                {
-                    // Create new user if doesn't exist
-                    string randomPassword = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
-                    string passwordHash = BCrypt.Net.BCrypt.HashPassword(randomPassword);
-
-                    user = new User
-                    {
-                        Username = payload.Email.Split('@')[0],
-                        Email = payload.Email,
-                        FullName = payload.Name,
-                        Password = randomPassword,
-                        PasswordHash = passwordHash,
-                        RoleId = 2, // User Role
-                        CreatedAt = DateTime.UtcNow,
-                        IsVerification = true
-                    };
-
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
-
-                    // Reload user to get the Role
-                    user = await _context.Users
-                        .Include(u => u.Role)
-                        .FirstOrDefaultAsync(u => u.Email == payload.Email);
-
-                    // Send welcome email
-                    await _emailService.SendWelcomeEmail(user.Email, user.Username);
-                }
-
-                if (user.IsBanned)
-                {
-                    response.Success = false;
-                    response.Message = "Tài khoản đã bị khóa";
-                    return response;
-                }
-
-                response.Data = GenerateJwtToken(user);
-                response.Message = "Đăng nhập bằng Google thành công";
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = "Lỗi đăng nhập bằng Google: " + (ex.InnerException?.Message ?? ex.Message);
-            }
-
-            return response;
-        }
-
-        // ... rest of the code ...
     }
+
+
+
+
 }
+
 

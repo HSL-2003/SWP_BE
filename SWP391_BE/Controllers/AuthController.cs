@@ -3,11 +3,13 @@ using Data.Response;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Microsoft.AspNetCore.Authorization;
-using BCrypt.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Google;
+using Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace SWP391_BE.Controllers
 {
@@ -16,10 +18,12 @@ namespace SWP391_BE.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
-            _authService = authService;
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [AllowAnonymous]
@@ -43,12 +47,14 @@ namespace SWP391_BE.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("google-login")]
-        public async Task<ActionResult<ServiceResponse<string>>> GoogleLogin([FromBody] string token)
+        [HttpPost("login-google")]
+        public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginDTO model)
         {
-            var response = await _authService.GoogleLogin(token);
+            var response = await _authService.LoginWithGoogle(model.IdToken);
             if (!response.Success)
+            {
                 return BadRequest(response);
+            }
             return Ok(response);
         }
 
@@ -60,14 +66,16 @@ namespace SWP391_BE.Controllers
                 return BadRequest(response);
             return Ok(response);
         }
+
+        [AllowAnonymous]
         [HttpGet("login-facebook")]
         public IActionResult LoginFacebook()
         {
             var properties = new AuthenticationProperties
             {
-                RedirectUri = Url.Action(nameof(FacebookCallback)) // Trang nhận kết quả từ Facebook
+                RedirectUri = Url.Action(nameof(FacebookCallback))
             };
-            return Challenge(properties, "Facebook"); // Gửi yêu cầu đăng nhập qua Facebook
+            return Challenge(properties, "Facebook");
         }
 
         [HttpGet("facebook-callback")]
@@ -77,7 +85,7 @@ namespace SWP391_BE.Controllers
 
             if (!authenticateResult.Succeeded)
             {
-                return BadRequest("Facebook authentication failed.");
+                return BadRequest(new { message = "Facebook authentication failed." });
             }
 
             var claims = authenticateResult.Principal.Identities.FirstOrDefault()?.Claims;
@@ -88,8 +96,6 @@ namespace SWP391_BE.Controllers
 
             return Ok(new { message = "Đăng nhập Facebook thành công!", claims });
         }
-
-
 
         [HttpPost("forgot-password")]
         public async Task<ActionResult<ServiceResponse<string>>> ForgotPassword([FromBody] string email)
@@ -112,6 +118,6 @@ namespace SWP391_BE.Controllers
 
     public class GoogleLoginDTO
     {
-        public string Token { get; set; }
+        public string IdToken { get; set; }
     }
 }
