@@ -62,6 +62,12 @@ namespace Service
                     response.Message = "Email đã được sử dụng";
                     return response;
                 }
+                if (await PhoneNumberExists(model.PhoneNumber))
+                {
+                    response.Success = false;
+                    response.Message = "Số Điện Thoại Đã được sử dụng ";
+                    return response;
+                }
 
                 string passwordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
                 string verificationToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
@@ -75,7 +81,7 @@ namespace Service
                     FullName = model.FullName,
                     PhoneNumber = model.PhoneNumber,
                     Address = model.Address,
-                    RoleId = 2,
+                    RoleId = 3,
                     CreatedAt = DateTime.UtcNow,
                     VerificationToken = verificationToken,
                     IsVerification = false,
@@ -333,6 +339,10 @@ namespace Service
         {
             return await _context.Users.AnyAsync(u => u.Email == email);
         }
+        private async Task<bool> PhoneNumberExists(string phonenumber)
+        {
+            return await _context.Users.AnyAsync(u => u.PhoneNumber == phonenumber);
+        }
         public async Task<ServiceResponse<string>> LoginWithGoogle(string idToken)
         {
             var response = new ServiceResponse<string>();
@@ -348,8 +358,9 @@ namespace Service
                     {
                         Username = payload.Email.Split('@')[0],
                         Email = payload.Email,
-                        FullName = payload.Name,
-                        PhoneNumber = "DefaultPhoneNumber",  // Nếu Google không trả về số điện thoại
+                        FullName = string.IsNullOrEmpty(payload.Name)?"Unknown User":payload.Name,
+
+
                         Address = "DefaultAddress",
                         ExpirationToken = Guid.NewGuid().ToString(), // Token xác thực
                         VerificationToken = Guid.NewGuid().ToString(),
@@ -358,6 +369,7 @@ namespace Service
                         CreatedAt = DateTime.UtcNow,
                         Password = "GOOGLE_LOGIN", // Gán giá trị mặc định
                         PasswordHash = BCrypt.Net.BCrypt.HashPassword("GOOGLE_LOGIN") // Hash mật khẩu mặc định
+
                     };
 
                     _context.Users.Add(user);
