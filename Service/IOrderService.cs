@@ -1,4 +1,7 @@
 using Data.Models;
+using Data.OrderDTO;
+using static Repo.OrderRepository;
+
 
 namespace Service
 {
@@ -9,5 +12,7 @@ namespace Service
         Task AddOrderAsync(Order order);
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(int id);
+        Task<OrderInfo> GetOrderInfoAsync(int orderId);
+        Task<OrderDetailInfo> GetOrderDetailInfoAsync(int orderId);
     }
 }

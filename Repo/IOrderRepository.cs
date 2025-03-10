@@ -1,4 +1,5 @@
 using Data.Models;
+using static Repo.OrderRepository;
 
 namespace Repo
 {
@@ -9,5 +10,6 @@ namespace Repo
         Task AddAsync(Order order);
         Task UpdateAsync(Order order);
         Task DeleteAsync(int id);
+     
     }
 }

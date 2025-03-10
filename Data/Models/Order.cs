@@ -16,6 +16,9 @@ public partial class Order
     public decimal? TotalAmount { get; set; }
 
     public string? Status { get; set; }
+    public string? Shipper { get; set; }
+
+    public string? TrackingCode { get; set; }
 
     public string? PaymentMethod { get; set; }
 

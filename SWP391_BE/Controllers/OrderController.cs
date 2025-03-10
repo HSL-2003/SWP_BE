@@ -157,5 +157,20 @@ namespace SWP391_BE.Controllers
                 return StatusCode(500, "An error occurred while deleting the order");
             }
         }
+
+        [HttpGet("info/{orderId}")]
+        public async Task<IActionResult> GetOrderInfo(int orderId)
+        {
+            try
+            {
+                var orderInfo = await _orderService.GetOrderInfoAsync(orderId);
+                return Ok(orderInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving order info: {ex}");
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
     }
 } 
