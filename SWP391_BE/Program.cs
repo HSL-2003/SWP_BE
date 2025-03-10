@@ -1,41 +1,40 @@
-﻿using Data.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+using Data.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Net.payOS;
 using Repo;
 using Service;
 using SWP391_BE.Mappings;
 using System.Text;
 
+IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+PayOS payOS = new PayOS(configuration["Environment:PAYOS_CLIENT_ID"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_API_KEY"] ?? throw new Exception("Cannot find environment"),
+                    configuration["Environment:PAYOS_CHECKSUM_KEY"] ?? throw new Exception("Cannot find environment"));
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton(payOS);
+
 // Add services to the container.
-builder.Services.AddHttpContextAccessor();
-// Register SkinCareManagementDbContext
-builder.Services.AddHttpClient();
 builder.Services.AddDbContext<SkinCareManagementDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SkinCareManagementDB")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SkinCareManagementDB") ?? throw new InvalidOperationException("Connection string is not configured.")));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add existing service registrations
+// Register existing services
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
@@ -79,16 +78,22 @@ builder.Services.AddAutoMapper(typeof(VolumeMappingProfile));
 builder.Services.AddScoped<ISkinTypeRepository, SkinTypeRepository>();
 builder.Services.AddScoped<ISkinTypeService, SkinTypeService>();
 builder.Services.AddAutoMapper(typeof(SkinTypeMappingProfile));
-
 builder.Services.AddScoped<ISkinRoutineRepository, SkinRoutineRepository>();
 builder.Services.AddScoped<ISkinRoutineService, SkinRoutineService>();
 builder.Services.AddAutoMapper(typeof(SkinRoutineMappingProfile));
 
-// Add Payment related services
+// Register Payment related services
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<PayosService>();
-// Add these lines along with the other service registrations
+/*builder.Services.AddHttpClient<IPayosService, PayosService>(client =>
+{
+    client.BaseAddress = new Uri("https://api-merchant.payos.vn/");
+    client.DefaultRequestHeaders.Add("x-client-id", builder.Configuration["Payos:ClientId"] ?? throw new ArgumentNullException("Payos:ClientId"));
+    client.DefaultRequestHeaders.Add("x-api-key", builder.Configuration["Payos:ApiKey"] ?? throw new ArgumentNullException("Payos:ApiKey"));
+    client.Timeout = TimeSpan.FromSeconds(30);
+});*/
+
+// Register additional services
 builder.Services.AddScoped<IDashboardReportRepository, DashboardReportRepository>();
 builder.Services.AddScoped<IDashboardReportService, DashboardReportService>();
 builder.Services.AddAutoMapper(typeof(DashboardMappingProfile));
@@ -97,80 +102,51 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
+builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
+
 // CORS configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
+    options.AddPolicy("AllowFrontend",
         builder => builder
-            .WithOrigins("http://localhost:5173", "https://localhost:7285") // Đổi thành địa chỉ frontend của bạn
+            .WithOrigins(
+                "http://localhost:5173", // FE local
+                "https://swp-391-pink.vercel.app", // FE deployed
+                "https://api-sandbox.payos.vn",
+                "https://0604-27-78-79-30.ngrok-free.app" // Thêm ngrok URL mới vào đây mỗi lần restart
+            )
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials()); // Cho phép cookies, headers khi login
+            .AllowCredentials());
 });
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-})
-.AddCookie(options =>
-{
-    options.Cookie.Name = "SkinCareAuth"; // Đặt tên cụ thể để dễ debug
-    options.Cookie.SameSite = SameSiteMode.None; // Đảm bảo gửi qua redirect
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Chỉ HTTPS
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true; // Đảm bảo cookie không bị chặn
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        RoleClaimType = "role"
-    };
-})
-.AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    googleOptions.CallbackPath = "/api/Auth/google-callback";
-    googleOptions.SaveTokens = true;  
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value ?? throw new InvalidOperationException("Token is not configured."))),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            RoleClaimType = "role"
+        };
+    });
 
-    googleOptions.Events.OnRemoteFailure = context =>
-    {
-        Console.WriteLine($"Google OAuth Error: {context.Failure?.Message}");
-        Console.WriteLine($"QueryString: {context.Request.QueryString}");
-        Console.WriteLine($"Cookies: {context.Request.Cookies}");
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        context.Response.WriteAsync($"OAuth failure: {context.Failure?.Message}");
-        context.HandleResponse();
-        return Task.CompletedTask;
-    };
-})
-.AddFacebook(facebookOptions =>
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 {
-    IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
-    facebookOptions.AppId = facebookAuthNSection["AppId"];
-    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
-    facebookOptions.CallbackPath = "/dang-nhap-tu-facebook";
+    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? throw new InvalidOperationException("Google ClientId is not configured.");
+    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? throw new InvalidOperationException("Google ClientSecret is not configured.");
 });
-
-
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
-
 // Middleware order is important!
 app.UseRouting();
-app.UseCors("AllowAll");  // Must be after UseRouting
 
 if (app.Environment.IsDevelopment())
 {
@@ -178,9 +154,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Remove UseHttpsRedirection if testing with HTTP
+// app.UseHttpsRedirection();
 
-app.UseSession();
-
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -200,4 +177,4 @@ app.Use(async (context, next) =>
     }
 });
 
-app.Run(); 
+app.Run();

@@ -25,7 +25,7 @@ namespace SWP391_BE.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
             try
@@ -63,7 +63,7 @@ namespace SWP391_BE.Controllers
             }
         }
 
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<ActionResult<UserDTO>> CreateUser(CreateUserDTO createUserDTO)
         {
             try

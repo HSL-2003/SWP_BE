@@ -11,9 +11,9 @@
     <PackageReference Include="Facebook" Version="7.0.6" />
     <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
     <PackageReference Include="MailKit" Version="4.10.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.13" />
     <PackageReference Include="MimeKit" Version="4.10.0" />
+    <PackageReference Include="payOS" Version="1.0.9" />
   </ItemGroup>
 
   <ItemGroup>
